@@ -1,0 +1,34 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Shrooms and Movie Adventure</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game">
+        <h1>Shrooms and Doctor Strange Adventure</h1>
+        <p>You're about to embark on a wild journey of trying shrooms for the first time and going to see Doctor Strange. Ready to start?</p>
+        <a href="#part1" class="start-button">Begin Adventure</a>
+        
+        <div id="part1" class="hidden">
+            <p>You've taken the shrooms. Colors seem brighter, and everything feels a bit different. What do you want to do next?</p>
+            <a href="#part2a" class="choice-button">Explore the park</a>
+            <a href="#part2b" class="choice-button">Head to the movie theater</a>
+        </div>
+        
+        <div id="part2a" class="hidden">
+            <p>The park feels magical. The trees seem to be dancing, and the flowers are whispering secrets. <a href="#part3" class="choice-button">Continue to the theater</a></p>
+        </div>
+        
+        <div id="part2b" class="hidden">
+            <p>You're at the movie theater, and the previews are starting. Everything on the screen looks surreal. <a href="#part3" class="choice-button">Watch Doctor Strange</a></p>
+        </div>
+        
+        <div id="part3" class="hidden">
+            <p>The movie is a mind-bending experience. The special effects are incredible, and your imagination is running wild. What a journey!</p>
+        </div>
+    </div>
+</body>
+</html>
