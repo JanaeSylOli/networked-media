@@ -1,17 +1,17 @@
-/* Reset some default styles */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
   
-  /* Body styling */
+
   body {
     font-family: 'Arial', sans-serif;
     background-color: #f0f0f0;
   }
   
-  /* Container for the narrative */
+
   .narrative {
     display: flex;
     flex-direction: column;
@@ -21,50 +21,47 @@
     text-align: center;
   }
   
-  /* Each scene section styling */
+  
   .scene {
     width: 100%;
-    height: 100vh; /* Full screen height */
-    display: none; /* Hide all sections by default */
+    height: 100vh; 
+    display: none;
     padding: 20px;
-    transition: opacity 0.5s ease; /* Smooth transition for fade-in effect */
-    background-size: cover; /* Ensure the background image covers the entire section */
-    background-position: center; /* Center the image */
+    transition: opacity 0.5s ease; 
+    background-size: cover; 
+    background-position: center; 
   }
-  
-  /* Background images for each scene */
+
   .scene-1 {
-    background-image: url('images/icecream.png'); /* Path to your image in the images folder */
+    background-image: url('images/icecream.png'); 
   }
   
   .scene-2 {
-    background-image: url('images/icecream2.png'); /* Path to your image in the images folder */
+    background-image: url('images/icecream2.png'); 
   }
   
   .scene-3 {
-    background-image: url('images/icecream3.png'); /* Path to your image in the images folder */
-  }
+    background-image: url('images/icecream3.png'); 
   
   .scene-4 {
-    background-image: url('images/icecream4.png'); /* Path to your image in the images folder */
-  }
+    background-image: url('images/icecream4.png'); 
   
-  /* Targeted scene becomes visible */
+
   .scene:target {
     display: block;
   }
   
-  /* Text and button styling */
+  
   h1 {
     font-size: 3rem;
     margin-bottom: 20px;
-    color: white; /* Ensure text is visible against the background */
+    color: white; 
   }
   
   p {
     font-size: 1.2rem;
     margin-bottom: 20px;
-    color: white; /* Ensure text is visible against the background */
+    color: white; 
   }
   
   a.next {
