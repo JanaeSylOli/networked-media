@@ -1,51 +1,78 @@
-body {
-    background-color: #2c3e50; /* Dark background */
-    color: #ecf0f1; /* Light text */
+/* Reset some default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body styling */
+  body {
     font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+  }
+  
+  /* Container for the narrative */
+  .narrative {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
     text-align: center;
+  }
+  
+  /* Each scene section styling */
+  .scene {
+    width: 100%;
+    height: 100vh; /* Full screen height */
+    display: none; /* Hide all sections by default */
     padding: 20px;
-}
-
-.game {
-    max-width: 600px;
-    margin: 0 auto;
-    background: #34495e;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-.hidden {
-    display: none;
-}
-
-.choice-button, .start-button {
-    display: inline-block;
-    margin: 10px;
-    padding: 10px 20px;
-    background: #1abc9c;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background 0.3s ease;
-}
-
-.choice-button:hover, .start-button:hover {
-    background: #16a085;
-}
-
-/* CSS for anchor-based navigation */
-#part1:target, #part2a:target, #part2b:target, #part3:target {
+    transition: opacity 0.5s ease; /* Smooth transition for fade-in effect */
+    background-size: cover; /* Ensure the background image covers the entire section */
+    background-position: center; /* Center the image */
+  }
+  
+  /* Background images for each scene */
+  .scene-1 {
+    background-image: url('images/icecream.png'); /* Path to your image in the images folder */
+  }
+  
+  .scene-2 {
+    background-image: url('images/icecream2.png'); /* Path to your image in the images folder */
+  }
+  
+  .scene-3 {
+    background-image: url('images/icecream3.png'); /* Path to your image in the images folder */
+  }
+  
+  .scene-4 {
+    background-image: url('images/icecream4.png'); /* Path to your image in the images folder */
+  }
+  
+  /* Targeted scene becomes visible */
+  .scene:target {
     display: block;
-    animation: fadeIn 1s;
-}
-
-/* Simple fade-in animation */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
+  }
+  
+  /* Text and button styling */
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: white; /* Ensure text is visible against the background */
+  }
+  
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: white; /* Ensure text is visible against the background */
+  }
+  
+  a.next {
+    padding: 10px 20px;
+    font-size: 1rem;
+    text-decoration: none;
+    background-color: #42A5F5;
+    color: white;
+    border-radius: 5px;
+  }
+  
