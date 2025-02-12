@@ -1,24 +1,35 @@
-window.unload {
+window.onload = () => {
+    let b1 = document.getElementById('myBtn')
 
+    b1.addEventListener('click', ()=>{
+        let div = document.getElementById('change')
+        let c = div.classList
+        if(c.contains("day")){
+            c.remove('day')
+            c.add('night')
+            b1.textContent = "lights on"
+        } else {
+            c.remove('night')
+            c.add('day')
+            b1.textContent = "lights off"
+        }
+    })
+    // shorthand for above
+    // b1.onclick = () =>{
+    // }
+
+    handleTyping()
 }
-b1.add EventListener('click', () => {
 
-    function time(){
-        // console.log (
-         //   'second has passed'
-       // )
+function handleTyping(){
+    let typingDiv = document.getElementById("typing")
 
-       const date = new Date()
+    document.addEventListener('keydown', (e)=>{
+        console.log(e.key)
 
-       console.log (date.toLocaleTimeString)
+        let newText = e.key
+        let oldText = typingDiv.innerHTML
 
-       // seconds++
-
-       <div class
-        let div=. document.createElement('div')
-        let c= class div for class list 
-        if[
-            C.DAY 
-            C.NUGH
-            else c
-        ]
+        typingDiv.innerHTML = oldText + newText
+    })
+}
