@@ -20,7 +20,8 @@ body {
 }
 
 .digit {
-    width: 80px;  /* Adjust the width to fit your layout */
-    height: 120px;  /* Adjust the height to fit your layout */
-    margin: 0 2px;
+    width: 80px; /* Adjust for better fit */
+    height: 120px; /* Adjust for better fit */
+    object-fit: contain; /* Ensures the entire hand fits inside */
+    background-color: lightgray;
 }
