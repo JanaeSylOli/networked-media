@@ -1,19 +1,16 @@
-const emojiHands = {
-    1: "🕐", 2: "🕑", 3: "🕒", 4: "🕓", 5: "🕔", 6: "🕕",
-    7: "🕖", 8: "🕗", 9: "🕘"
-};
-
 function updateClock() {
-    let now = new Date();
-    let hours = now.getHours() % 9 || 9;
-    let minutes = Math.floor(now.getMinutes() / 6) + 1;  // to fit 6 steps into 9 emojis
-    let seconds = Math.floor(now.getSeconds() / 6) + 1;
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
 
-    document.getElementById("hourHand").textContent = emojiHands[hours];
-    document.getElementById("minuteHand").textContent = emojiHands[minutes];
-    document.getElementById("secondHand").textContent = emojiHands[seconds];
+    document.getElementById('hoursTens').src = `images/${hours[0]}.jpg`;
+    document.getElementById('hoursOnes').src = `images/${hours[1]}.jpg`;
+    document.getElementById('minutesTens').src = `images/${minutes[0]}.jpg`;
+    document.getElementById('minutesOnes').src = `images/${minutes[1]}.jpg`;
+    document.getElementById('secondsTens').src = `images/${seconds[0]}.jpg`;
+    document.getElementById('secondsOnes').src = `images/${seconds[1]}.jpg`;
 }
 
-// Update every second
 setInterval(updateClock, 1000);
 updateClock();
