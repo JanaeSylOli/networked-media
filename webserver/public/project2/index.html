@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,11 +7,21 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="clock-container">
-        <div class="label">Hour</div>
-        <img id="hourHand" src="" alt="Hour Hand">
-        <div class="label">Minute</div>
-        <img id="minuteHand" src="" alt="Minute Hand">
+    <div class="clock-wrapper">
+        <div class="clock-container">
+            <div class="time-unit">
+                <div class="label">Hour</div>
+                <img id="hourHand" src="" alt="Hour Hand">
+            </div>
+            <div class="time-unit">
+                <div class="label">Minute</div>
+                <img id="minuteHand" src="" alt="Minute Hand">
+            </div>
+            <div class="time-unit">
+                <div class="label">Second</div>
+                <img id="secondHand" src="" alt="Second Hand">
+            </div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
