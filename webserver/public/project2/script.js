@@ -7,11 +7,13 @@ function updateClock() {
     let now = new Date();
     let hours = now.getHours() % 12 || 12;
     let minutes = Math.floor(now.getMinutes() / 10) * 10;
+    let seconds = Math.floor(now.getSeconds() / 10) * 10;
 
     document.getElementById("hourHand").src = handImages[hours];
     document.getElementById("minuteHand").src = handImages[Math.floor(minutes / 10) + 1];
+    document.getElementById("secondHand").src = handImages[Math.floor(seconds / 10) + 1];
 }
 
-// Update every minute
-setInterval(updateClock, 60000);
+// Update every second
+setInterval(updateClock, 1000);
 updateClock();
