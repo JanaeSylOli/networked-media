@@ -1,16 +1,17 @@
-function updateClock() {
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
+const handImages = {
+    1: "1.jpg", 2: "2.jpg", 3: "3.jpg", 4: "4.jpg", 5: "5.jpg", 6: "6.jpg",
+    7: "7.jpg", 8: "8.jpg", 9: "9.jpg", 10: "10.jpg", 11: "11.jpg", 12: "12.jpg"
+};
 
-    document.getElementById('hoursTens').src = `images/${hours[0]}.jpg`;
-    document.getElementById('hoursOnes').src = `images/${hours[1]}.jpg`;
-    document.getElementById('minutesTens').src = `images/${minutes[0]}.jpg`;
-    document.getElementById('minutesOnes').src = `images/${minutes[1]}.jpg`;
-    document.getElementById('secondsTens').src = `images/${seconds[0]}.jpg`;
-    document.getElementById('secondsOnes').src = `images/${seconds[1]}.jpg`;
+function updateClock() {
+    let now = new Date();
+    let hours = now.getHours() % 12 || 12;
+    let minutes = Math.floor(now.getMinutes() / 10) * 10;
+
+    document.getElementById("hourHand").src = handImages[hours];
+    document.getElementById("minuteHand").src = handImages[Math.floor(minutes / 10) + 1];
 }
 
-setInterval(updateClock, 1000);
+// Update every minute
+setInterval(updateClock, 60000);
 updateClock();
