@@ -1,0 +1,25 @@
+.input-container{
+    border: 5px solid grey;
+    padding: 10px;
+    margin: auto;
+    width: 60%;
+}
+
+input[type="text"]{
+    width: 100%;
+}
+
+.controls-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding-top: 10px;
+}
+
+input[type="submit"]{
+    border: none;
+    font-size: 16pt;
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 5px 20px;
+}

@@ -1,0 +1,30 @@
+<head>
+    <title>class 13 🤍</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="input-container">
+        <form method="POST" action="/upload" enctype="multipart/form-data">
+            <input type="text" name="textMessage" placeholder="leave a kind comment!">
+            <div class="controls-container">
+                <input type="file" name="theimage">
+                <input type="submit" name="sbtn" value="send">
+            </div>
+        </form>
+    </div>
+    <div class="messages-container">
+        <%# for(let i = 0; i< allPosts.length; i++%>
+        <%# post = allPosts[i] %>
+        <% allPosts.forEach( (post)=>{ %> 
+            <div class="post-item">
+                <div class="date"> <%= post.date %> </div>
+                <p class="text">  <%= post.text %>   </p>
+                <% if(post.imgUrl) { %>
+                    <img src="<%= post.imgUrl %>">
+                <% } %>
+            </div>
+        <% } ) %>
+        <% %>
+    </div>
+</body>
+</html>
