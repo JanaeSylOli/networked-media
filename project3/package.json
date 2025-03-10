@@ -22,5 +22,6 @@
     "express": "^4.21.2",
     "multer": "^1.4.5-lts.1"
   },
-  "description": "project3"
+  "description": "project3",
+  "devDependencies": {}
 }
