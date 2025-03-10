@@ -1,5 +1,5 @@
 {
-  "name": "networked-media",
+  "name": "project3",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -15,11 +15,11 @@
     "url": "https://github.com/JanaeSylOli/networked-media/issues"
   },
   "homepage": "https://github.com/JanaeSylOli/networked-media#readme",
-  "description": "",
   "dependencies": {
     "body-parser": "^1.20.3",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "multer": "^1.4.5-lts.1"
-  }
+  },
+  "description": "project3"
 }
