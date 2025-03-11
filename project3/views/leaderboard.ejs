@@ -5,28 +5,17 @@
 </head>
 <body>
     <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/leaderboard">Leaderboard</a></li>
-            <li><a href="/events">Events & Prizes</a></li>
-            <li><a href="/forum">🗨️ Shadow Talk</a></li>
-        </ul>
+        <a href="/">Home</a>
+        <a href="/leaderboard">Leaderboard</a>
+        <a href="/forum">Forum</a>
+        <a href="/events">Events</a>
     </nav>
 
-    <header>
-        <h1>🏆 Leaderboard</h1>
-    </header>
-
-    <section class="leaderboard-container">
-        <h2>🔥 Most Popular Stories</h2>
-        <ul class="scrolling-leaderboard">
-            <% topPosts.forEach((post, index) => { %>
-                <li class="leaderboard-item">
-                    <strong>#<%= index + 1 %> <%= post.username %></strong> - <%= post.votes %> votes
-                    <p>"<%= post.message %>"</p>
-                </li>
-            <% }); %>
-        </ul>
-    </section>
+    <h2>🏆 Most Popular Users</h2>
+    <ul>
+        <% leaderboard.forEach((user, index) => { %>
+            <li><strong>#<%= index + 1 %> <%= user.username %></strong> - <%= user.score %> pts</li>
+        <% }) %>
+    </ul>
 </body>
 </html>

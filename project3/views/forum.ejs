@@ -1,51 +1,40 @@
 <html>
-    <head>
-        <title>Shadow Talk</title>
-        <link href="/styles.css" rel="stylesheet">
-    </head>
-    <body>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/leaderboard">Leaderboard</a></li>
-                <li><a href="/events">Events & Prizes</a></li>
-                <li><a href="/forum">💬 Shadow Talk</a></li>
-            </ul>
-        </nav>
+<head>
+    <title>Forum</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/leaderboard">Leaderboard</a>
+        <a href="/forum">Forum</a>
+        <a href="/events">Events</a>
+    </nav>
 
-        <header>
-            <h1>💬 Shadow Talk</h1>
-            <p>Share your best hiding spots, encounters, and scary stories!</p>
-        </header>
+    <h2>💬 Shadow Talk Forum</h2>
 
-        <!-- Forum Submission Form -->
-        <section class="form-container">
-            <h2>Post Your Hiding Story</h2>
-            <form method="POST" action="/submit">
-                <input type="text" name="username" placeholder="Your Shadow Name">
-                <textarea name="message" placeholder="Share your hiding experience..."></textarea>
-                <button type="submit" class="submit-button">Submit</button>
-            </form>
-        </section>
+    <form action="/forum" method="POST" enctype="multipart/form-data">
+        <input type="text" name="title" placeholder="Post Title" required>
+        <textarea name="textMessage" placeholder="Share your hiding story..." required></textarea>
+        <input type="file" name="image">
+        <button type="submit">Submit</button>
+    </form>
 
-        <!-- Display Forum Posts with Voting -->
-        <section class="posts">
-            <h2>Latest Hiding Stories</h2>
-            <% allPosts.forEach(post => { %>
-                <div class="post-item">
-                    <div class="post-header">
-                        <strong><%= post.username %></strong> - <span><%= post.date %></span>
-                    </div>
-                    <p class="post-text"><%= post.message %></p>
-                    <div class="vote-section">
-                        <form method="POST" action="/upvote/<%= post.id %>">
-                            <button type="submit" class="vote-button">👍 Upvote (<%= post.votes %>)</button>
-                        </form>
-                    </div>
-                </div>
-            <% }); %>
-        </section>
-
-        <script src="/script.js"></script>
-    </body>
+    <h2>📢 Latest Posts</h2>
+    <section class="posts">
+        <% posts.forEach(post => { %>
+            <div class="post">
+                <h3><%= post.title %></h3>
+                <p><strong><%= post.username %></strong> - <%= post.date %></p>
+                <p><%= post.message %></p>
+                <% if (post.image) { %>
+                    <img src="<%= post.image %>" alt="Hiding Spot">
+                <% } %>
+                <form action="/upvote/<%= post.id %>" method="POST">
+                    <button type="submit">👍 Upvote (<%= post.votes %>)</button>
+                </form>
+            </div>
+        <% }) %>
+    </section>
+</body>
 </html>

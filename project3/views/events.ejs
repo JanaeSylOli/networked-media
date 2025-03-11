@@ -1,40 +1,35 @@
 <html>
-    <head>
-        <title>Boogeyman Events</title>
-        <link href="/styles.css" rel="stylesheet">
-    </head>
-    <body>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/leaderboard">Leaderboard</a></li>
-                <li><a href="/events">Events & Prizes</a></li>
-                <li><a href="/forum">💬 Shadow Talk</a></li>
-            </ul>
-        </nav>
-        
+<head>
+    <title>Challenges</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/leaderboard">Leaderboard</a>
+        <a href="/forum">Forum</a>
+        <a href="/events">Events</a>
+    </nav>
 
-        <header>
-            <h1>Boogeyman Special Events</h1>
-            <p>Compete in terrifying challenges and prove your lurking skills!</p>
-        </header>
-        <section class="events">
-            <h2>Current Challenges & Prizes</h2>
-            <ul class="event-list">
-                <li class="event-item" onclick="location.href='/challenge/shadow-stalker';" style="cursor: pointer;">
-                    <strong>🕵️‍♂️ Ultimate Shadow Stalker</strong>
-                    <p>Prize: $100 Amazon Gift Card</p>
-                </li>
-                <li class="event-item" onclick="location.href='/challenge/hidden-reaction';" style="cursor: pointer;">
-                    <strong>👁️‍🗨️ Best Hidden Reaction</strong>
-                    <p>Prize: Exclusive Boogeyman Hoodie</p>
-                </li>
-                <li class="event-item" onclick="location.href='/challenge/master-of-disguise';" style="cursor: pointer;">
-                    <strong>🎭 Master of Disguise</strong>
-                    <p>Prize: Mystery Box of Horror Goodies</p>
-                </li>
-            </ul>
-        </section>
+    <h2>🕵️‍♂️ Join a Challenge</h2>
+    
+    <form action="/events" method="POST" enctype="multipart/form-data">
+        <textarea name="story" placeholder="Describe your best hiding experience..." required></textarea>
+        <input type="file" name="image">
+        <button type="submit">Enter</button>
+    </form>
 
-    </body>
+    <h2>🔥 Challenge Entries</h2>
+    <section class="entries">
+        <% challengeEntries.forEach(entry => { %>
+            <div class="entry">
+                <p><strong><%= entry.username %></strong> shared their hiding story:</p>
+                <p><%= entry.story %></p>
+                <% if (entry.image) { %>
+                    <img src="<%= entry.image %>" alt="Entry Image">
+                <% } %>
+            </div>
+        <% }) %>
+    </section>
+</body>
 </html>

@@ -1,74 +1,80 @@
-const express = require("express");
+const express = require('express');
+const bodyParser = require('body-parser');
+const multer = require('multer');
+
 const app = express();
-const path = require("path");
-const bodyParser = require("body-parser");
+const upload = multer({ dest: "public/upload" });
 
-app.use(express.static("public"));
+app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
 
-//   storage 
+// ✅ In-memory storage for tracking users and their activity
+let users = {};
+let leaderboard = [];
 let posts = [];
-let challenges = [
-    { name: "Ultimate Shadow Stalker", prize: "$100 Amazon Gift Card", id: "shadow-stalker" },
-    { name: "Best Hidden Reaction", prize: "Exclusive Boogeyman Hoodie", id: "hidden-reaction" },
-    { name: "Master of Disguise", prize: "Mystery Box of Horror Goodies", id: "master-of-disguise" }
-];
+let challengeEntries = [];
 
-//  Home Page
-app.get("/", (req, res) => {
-    let topPosts = [...posts].sort((a, b) => b.votes - a.votes);
-    res.render("index", { posts, topPosts, challenges });
-});
-
-//  Leaderboard
-app.get("/leaderboard", (req, res) => {
-    let topPosts = [...posts].sort((a, b) => b.votes - a.votes);
-    res.render("leaderboard", { topPosts });
-});
-
-// Shadow Talk (Forum)
-app.get("/shadow-talk", (req, res) => {
-    res.render("forum", { posts });
-});
-
-// Submit a Story
-app.post("/submit", (req, res) => {
-    const { username, message } = req.body;
-    if (username && message) {
-        posts.push({ username, message, votes: 0, date: new Date().toLocaleString() });
+// ✅ Middleware: Track user sessions
+app.use((req, res, next) => {
+    let username = req.query.user || "Guest";
+    if (!users[username]) {
+        users[username] = { posts: 0, votes: 0, score: 0 };
+        leaderboard.push({ username, score: 0 });
     }
-    res.redirect("/shadow-talk");
+    req.user = users[username];
+    req.username = username;
+    next();
 });
 
-// 🗣 Forum Page (Shadow Talk)
-app.get("/forum", (req, res) => {
-    res.render("forum", { posts }); // Ensure "posts" is available
+// ✅ Home Route (Passes user & posts)
+app.get('/', (req, res) => {
+    res.render('index', { user: req.user, username: req.username, leaderboard, posts });
 });
 
-// Upvote a Story
-app.post("/upvote", (req, res) => {
-    const postIndex = req.body.postIndex;
-    if (postIndex >= 0 && postIndex < posts.length) {
-        posts[postIndex].votes++;
+// ✅ Leaderboard Route
+app.get('/leaderboard', (req, res) => {
+    leaderboard.sort((a, b) => b.score - a.score);
+    res.render('leaderboard', { leaderboard });
+});
+
+// ✅ Events Page (Challenges)
+app.get('/events', (req, res) => {
+    res.render('events', { challengeEntries });
+});
+
+// ✅ Forum Page (Discussions)
+app.get('/forum', (req, res) => {
+    res.render('forum', { posts });
+});
+
+// ✅ Submit a Forum Post
+app.post('/forum', upload.single("image"), (req, res) => {
+    let newPost = {
+        id: posts.length + 1,
+        username: req.username,
+        date: new Date().toLocaleString(),
+        title: req.body.title,
+        message: req.body.textMessage,
+        image: req.file ? "/upload/" + req.file.filename : "",
+        votes: 0
+    };
+    posts.unshift(newPost);
+    users[req.username].posts += 1;
+    res.redirect('/forum');
+});
+
+// ✅ Upvote a Post
+app.post('/upvote/:id', (req, res) => {
+    let post = posts.find(p => p.id == req.params.id);
+    if (post) {
+        post.votes += 1;
+        users[post.username].score += 10;
     }
-    res.redirect("/shadow-talk");
+    res.redirect('/forum');
 });
 
-//  Events & Prizes
-app.get("/events", (req, res) => {
-    res.render("events", { challenges });
+// ✅ Start Server
+app.listen(3000, () => {
+    console.log('Server running on http://127.0.0.1:3000');
 });
-
-// Individual Challenge Pages
-app.get("/challenge/:id", (req, res) => {
-    const challenge = challenges.find(ch => ch.id === req.params.id);
-    if (!challenge) return res.status(404).send("Challenge Not Found");
-    res.render("challenge", { challenge });
-});
-
-//  Start Server
-const PORT = 3000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
