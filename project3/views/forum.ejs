@@ -1,33 +1,51 @@
 <html>
     <head>
-        <title>Submit Your Hide & Seek Story</title>
+        <title>Shadow Talk</title>
         <link href="/styles.css" rel="stylesheet">
     </head>
     <body>
-        <nav class="hamburger-menu">
-            <input type="checkbox" id="menu-toggle">
-            <label for="menu-toggle" class="menu-icon">☰</label>
-            <ul class="menu">
+        <nav>
+            <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/leaderboard">Leaderboard</a></li>
-                <li><a href="/profile">Profile</a></li>
+                <li><a href="/events">Events & Prizes</a></li>
+                <li><a href="/forum">💬 Shadow Talk</a></li>
             </ul>
         </nav>
 
         <header>
-            <h1>Share Your Hiding Spot or Encounter</h1>
-            <p>Tell us about your best lurking moment!</p>
+            <h1>💬 Shadow Talk</h1>
+            <p>Share your best hiding spots, encounters, and scary stories!</p>
         </header>
 
-        <div class="input-container">
-            <form method="POST" action="/submit" enctype="multipart/form-data">
-                <input type="text" name="username" placeholder="Your name (or shadow name)">
-                <textarea name="message" placeholder="Describe your hiding spot or a spooky encounter..."></textarea>
-                <div class="controls-container">
-                    <input type="file" name="image">
-                    <input type="submit" name="sbtn" value="Share">
-                </div>
+        <!-- Forum Submission Form -->
+        <section class="form-container">
+            <h2>Post Your Hiding Story</h2>
+            <form method="POST" action="/submit">
+                <input type="text" name="username" placeholder="Your Shadow Name">
+                <textarea name="message" placeholder="Share your hiding experience..."></textarea>
+                <button type="submit" class="submit-button">Submit</button>
             </form>
-        </div>
+        </section>
+
+        <!-- Display Forum Posts with Voting -->
+        <section class="posts">
+            <h2>Latest Hiding Stories</h2>
+            <% allPosts.forEach(post => { %>
+                <div class="post-item">
+                    <div class="post-header">
+                        <strong><%= post.username %></strong> - <span><%= post.date %></span>
+                    </div>
+                    <p class="post-text"><%= post.message %></p>
+                    <div class="vote-section">
+                        <form method="POST" action="/upvote/<%= post.id %>">
+                            <button type="submit" class="vote-button">👍 Upvote (<%= post.votes %>)</button>
+                        </form>
+                    </div>
+                </div>
+            <% }); %>
+        </section>
+
+        <script src="/script.js"></script>
     </body>
 </html>

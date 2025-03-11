@@ -1,113 +1,79 @@
+/* General Styles */
 body {
-    background-color: #0a0a0a;
-    color: #e0e0e0;
-    font-family: Arial, sans-serif;
-    text-align: center;
+    background: #0a0a0a;
+    color: white;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
 }
 
-/* Header */
-header {
-    background: linear-gradient(180deg, #111, #000);
-    padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
-}
-
-/* Navigation Bar */
+/* Navigation */
 nav {
     display: flex;
     justify-content: center;
-    background: #222;
-    padding: 10px 0;
+    background: #111;
+    padding: 15px;
 }
-
 nav ul {
+    display: flex;
     list-style: none;
     padding: 0;
-    margin: 0;
-    display: flex;
+    gap: 20px;
 }
-
-nav ul li {
-    margin: 0 15px;
-}
-
-nav ul li a {
+nav a {
+    color: white;
     text-decoration: none;
-    color: #e0e0e0;
-    font-size: 18px;
-    padding: 10px 15px;
-    transition: background 0.3s ease-in-out;
+    padding: 10px;
 }
-
-nav ul li a:hover {
+nav a:hover {
     background: #444;
     border-radius: 5px;
 }
 
-/* Leaderboard Styling */
-.leaderboard-container {
-    margin: 20px auto;
-    width: 60%;
-    padding: 20px;
-    background: #111;
-    border-radius: 10px;
+/* Hero Section */
+header {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(to right, #111, #222);
 }
 
-.scrolling-leaderboard {
-    max-height: 200px;
-    overflow-y: auto;
+/* Challenges */
+.challenges {
+    text-align: center;
+    padding: 40px;
+}
+.challenge-box {
+    display: block;
     background: #222;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.leaderboard-item {
-    padding: 10px;
-    border-bottom: 1px solid #444;
-}
-
-/* Post Section */
-.post-item {
-    background: #111;
-    padding: 15px;
+    padding: 20px;
     margin: 10px auto;
     width: 50%;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
-    transition: transform 0.3s ease-in-out;
+    border-radius: 8px;
+    text-decoration: none;
+    color: white;
+    transition: 0.3s;
 }
-
-.post-item:hover {
+.challenge-box:hover {
+    background: #333;
     transform: scale(1.05);
 }
 
-.post-image {
-    max-width: 100%;
-    border-radius: 5px;
+/* Posts */
+.posts {
+    padding: 40px;
+    text-align: center;
 }
-
-/* Event Styling */
-.event-container {
-    margin: 20px auto;
-    width: 60%;
+.post-item {
     background: #222;
     padding: 20px;
-    border-radius: 10px;
+    margin: 10px auto;
+    width: 50%;
+    border-radius: 8px;
 }
-
-.event-list {
-    list-style: none;
-    padding: 0;
-}
-
-.contestant-item {
+.upvote-button {
+    background: #00ffcc;
     padding: 10px;
-    border-bottom: 1px solid #444;
-}
-
-.contestant-image {
-    max-width: 100%;
+    border: none;
     border-radius: 5px;
+    cursor: pointer;
 }

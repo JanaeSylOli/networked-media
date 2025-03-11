@@ -8,40 +8,33 @@
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/leaderboard">Leaderboard</a></li>
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/events">Events</a></li>
+                <li><a href="/events">Events & Prizes</a></li>
+                <li><a href="/forum">💬 Shadow Talk</a></li>
             </ul>
         </nav>
+        
 
         <header>
             <h1>Boogeyman Special Events</h1>
             <p>Compete in terrifying challenges and prove your lurking skills!</p>
         </header>
-
-        <section class="event-container">
-            <h2>Upcoming Challenges</h2>
+        <section class="events">
+            <h2>Current Challenges & Prizes</h2>
             <ul class="event-list">
-                <li class="event-item">
-                    <strong>🕵️‍♂️ Shadow Stalker Showdown</strong>
-                    <p>Participants must submit a photo of their most creative hiding spot. The community votes on the most invisible boogeyman!</p>
+                <li class="event-item" onclick="location.href='/challenge/shadow-stalker';" style="cursor: pointer;">
+                    <strong>🕵️‍♂️ Ultimate Shadow Stalker</strong>
+                    <p>Prize: $100 Amazon Gift Card</p>
                 </li>
-                <li class="event-item">
-                    <strong>👁️‍🗨️ The Midnight Peek</strong>
-                    <p>Scare tactics at their best! Boogeymen must capture reactions of humans spotting them in the dark. Subtlety earns extra points.</p>
+                <li class="event-item" onclick="location.href='/challenge/hidden-reaction';" style="cursor: pointer;">
+                    <strong>👁️‍🗨️ Best Hidden Reaction</strong>
+                    <p>Prize: Exclusive Boogeyman Hoodie</p>
                 </li>
-                <li class="event-item">
-                    <strong>🦶 Silent Step Sprint</strong>
-                    <p>Can you move unseen? Submit a short clip or image proving your ability to sneak past undetected.</p>
-                </li>
-                <li class="event-item">
-                    <strong>🗣️ Whisper in the Dark</strong>
-                    <p>A voice-only challenge! Send in the creepiest, most spine-chilling whisper audio you can create.</p>
-                </li>
-                <li class="event-item">
+                <li class="event-item" onclick="location.href='/challenge/master-of-disguise';" style="cursor: pointer;">
                     <strong>🎭 Master of Disguise</strong>
-                    <p>Blend into the surroundings so well that even other boogeymen struggle to find you. Submit photos of your best camouflage.</p>
+                    <p>Prize: Mystery Box of Horror Goodies</p>
                 </li>
             </ul>
         </section>
+
     </body>
 </html>
