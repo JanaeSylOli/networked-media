@@ -1,119 +1,175 @@
-/* General Styles */
+/* GENERAL STYLES */
 body {
-    background: url('/upload/DALL·E-2025-03-11-shadow-monster.webp') no-repeat center center fixed;
-    background-size: cover;
-    color: #d1d1d1;
+    background: #0a0a0a;
+    color: white;
     font-family: 'Poppins', sans-serif;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+    margin: 0;
+    padding: 0;
+    text-align: center;
     overflow-x: hidden;
 }
 
-/* Spooky Animations */
-@keyframes flicker {
-    0% { opacity: 1; }
-    50% { opacity: 0.8; }
-    100% { opacity: 1; }
-}
-
-h1, h2, h3 {
-    animation: flicker 2s infinite alternate;
-}
-
-/* Navigation Bar (Horizontal Menu) */
+/* NAVIGATION BAR */
 nav {
-    background: rgba(0, 0, 0, 0.8);
-    padding: 15px 0;
-    text-align: center;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10, 10, 10, 0.9);
+    padding: 15px 30px;
+    box-shadow: 0 4px 20px rgba(0, 255, 204, 0.6);
+}
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    padding: 12px 18px;
+    transition: all 0.3s ease-in-out;
+    font-weight: bold;
+}
+nav a:hover {
+    color: #00ffcc;
+    text-shadow: 0px 0px 10px #00ffcc;
 }
 
-.menu {
+/* HERO SECTION */
+.hero {
+    background: url('/path-to-background-image.jpg') center center / cover no-repeat;
+    text-align: center;
+    padding: 120px 20px;
+    position: relative;
+}
+.hero h2 {
+    font-size: 50px;
+    font-weight: bold;
+    color: #00ffcc;
+    text-shadow: 0px 0px 15px rgba(0, 255, 204, 0.8);
+    animation: float 3s infinite ease-in-out;
+}
+.hero p {
+    font-size: 22px;
+    margin-top: 10px;
+}
+
+/* CALL-TO-ACTION BUTTONS */
+.cta {
+    background: #00ffcc;
+    color: black;
+    font-size: 22px;
+    padding: 15px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.cta:hover {
+    background: #009688;
+    box-shadow: 0px 0px 15px rgba(0, 255, 204, 0.8);
+}
+
+/* LEADERBOARD STYLES */
+.leaderboard-container {
+    text-align: center;
+    padding: 40px;
+}
+.scrolling-leaderboard {
+    max-height: 300px;
+    overflow-y: auto;
     list-style: none;
     padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
+    text-align: left;
 }
-
-.menu li {
-    display: inline-block;
-}
-
-.menu a {
-    color: #ff0000;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 10px 20px;
-    transition: color 0.3s ease-in-out, background 0.3s ease-in-out;
-    border-radius: 5px;
-}
-
-.menu a:hover {
-    color: #000;
-    background: #ff0000;
-}
-
-/* Challenges Section */
-.challenge-list {
-    background: rgba(0, 0, 0, 0.6);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 20px rgba(255, 0, 0, 0.8);
-    margin: 80px auto;
-    width: 80%;
-}
-
-.challenge {
-    background: rgba(20, 20, 20, 0.9);
+.leaderboard-item {
+    background: #111;
     padding: 15px;
-    margin: 15px 0;
-    border-left: 5px solid #ff0000;
-    transition: transform 0.3s ease-in-out;
+    margin: 10px;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    font-size: 22px;
+    color: #00ffcc;
+    font-weight: bold;
+    text-shadow: 0px 0px 10px #00ffcc;
 }
-
-.challenge:hover {
+.leaderboard-item:hover {
     transform: scale(1.05);
 }
 
-/* Form Styles */
-form {
-    background: rgba(20, 20, 20, 0.9);
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.8);
-    width: 50%;
-    margin: auto;
+/* EVENTS & PRIZES */
+.events {
     text-align: center;
+    padding: 50px;
+    background: linear-gradient(black, #111);
+}
+.event-list {
+    list-style: none;
+    padding: 0;
+}
+.event-item {
+    background: #222;
+    padding: 20px;
+    margin: 15px;
+    border-radius: 10px;
+    font-size: 24px;
+    color: #ffcc00;
+    text-shadow: 0px 0px 10px #ffcc00;
+    transition: transform 0.3s;
+}
+.event-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
 }
 
-input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: none;
-    background: rgba(0, 0, 0, 0.5);
-    color: #fff;
-    border-radius: 5px;
+/* FORUM STYLES */
+.posts {
+    padding: 40px;
+}
+.post-item {
+    background: #222;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 255, 204, 0.7);
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: white;
+}
+.post-item:hover {
+    transform: scale(1.05);
 }
 
+/* BUTTON STYLES */
 button {
-    background: #ff0000;
-    color: #fff;
-    border: none;
+    background: #ff00ff;
+    color: white;
+    font-size: 20px;
     padding: 10px 20px;
+    border-radius: 50px;
+    border: none;
     cursor: pointer;
-    font-size: 16px;
-    transition: background 0.3s ease-in-out;
+    transition: 0.3s;
+}
+button:hover {
+    background: #ff33cc;
+    box-shadow: 0px 0px 15px rgba(255, 0, 255, 0.8);
 }
 
-button:hover {
-    background: #fff;
-    color: #000;
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: black;
+    font-size: 16px;
+    color: #fff;
+}
+
+/* FLOATING ANIMATION */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(10px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
 }

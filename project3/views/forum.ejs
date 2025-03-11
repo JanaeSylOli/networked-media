@@ -22,19 +22,19 @@
 
     <h2>📢 Latest Posts</h2>
     <section class="posts">
-        <% posts.forEach(post => { %>
-            <div class="post">
-                <h3><%= post.title %></h3>
-                <p><strong><%= post.username %></strong> - <%= post.date %></p>
-                <p><%= post.message %></p>
-                <% if (post.image) { %>
-                    <img src="<%= post.image %>" alt="Hiding Spot">
-                <% } %>
-                <form action="/upvote/<%= post.id %>" method="POST">
-                    <button type="submit">👍 Upvote (<%= post.votes %>)</button>
-                </form>
-            </div>
-        <% }) %>
+        <h2>Latest Hiding Stories</h2>
+        <ul>
+            <% allPosts.forEach(post => { %>
+                <li class="post-item">
+                    <strong><%= post.username %></strong> - <span><%= post.date %></span>
+                    <p><%= post.message %></p>
+                    <p>Upvotes: <%= post.upvotes %></p>
+                    <form action="/upvote/<%= post.id %>" method="POST">
+                        <button type="submit">👍 Upvote (<%= post.upvotes %>)</button>
+                    </form>
+                </li>
+            <% }) %>
+        </ul>
     </section>
 </body>
 </html>

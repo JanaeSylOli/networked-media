@@ -11,11 +11,14 @@
         <a href="/events">Events</a>
     </nav>
 
-    <h2>🏆 Most Popular Users</h2>
-    <ul>
-        <% leaderboard.forEach((user, index) => { %>
-            <li><strong>#<%= index + 1 %> <%= user.username %></strong> - <%= user.score %> pts</li>
-        <% }) %>
-    </ul>
+    <h2>🔥 Most Popular Stories🔥</h2>
+<ul>
+    <% leaderboard.forEach((player, index) => { %>
+        <li class="leaderboard-item">
+            <strong><%= index + 1 %>. <%= player.username %></strong>
+            <span>💡 Upvotes: <%= player.score %></span>
+        </li>
+    <% }) %>
+</ul>
 </body>
 </html>

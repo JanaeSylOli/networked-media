@@ -9,72 +9,96 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
-// ✅ In-memory storage for tracking users and their activity
-let users = {};
-let leaderboard = [];
-let posts = [];
+// Data Storage
+let leaderboard = [
+    { username: "ShadowMaster", score: 500 },
+    { username: "CreepingPhantom", score: 420 },
+    { username: "DarkDweller", score: 350 }
+];
+
+let allPosts = [
+    { id: 1, username: "NightWalker", date: "March 10, 2025", message: "Best hiding spot under the stairs!", imageUrl: "", upvotes: 3 }
+];
+
+let challenges = [
+    { title: "Shadow Stalker", description: "Stay hidden for 30 minutes without being found!", prize: "Cloak of Invisibility" },
+    { title: "Hidden Reaction", description: "Don’t react even if someone calls your name!", prize: "Stealth Champion Badge" },
+    { title: "Master of Disguise", description: "Blend in with your surroundings like a pro!", prize: "Phantom Mask" }
+];
+
 let challengeEntries = [];
 
-// ✅ Middleware: Track user sessions
-app.use((req, res, next) => {
-    let username = req.query.user || "Guest";
-    if (!users[username]) {
-        users[username] = { posts: 0, votes: 0, score: 0 };
-        leaderboard.push({ username, score: 0 });
-    }
-    req.user = users[username];
-    req.username = username;
-    next();
-});
+// Function to update leaderboard based on upvotes
+const updateLeaderboard = () => {
+    let userUpvotes = {};
 
-// ✅ Home Route (Passes user & posts)
+    allPosts.forEach(post => {
+        if (!userUpvotes[post.username]) {
+            userUpvotes[post.username] = 0;
+        }
+        userUpvotes[post.username] += post.upvotes;
+    });
+
+    leaderboard = Object.keys(userUpvotes).map(username => ({
+        username,
+        score: userUpvotes[username]
+    })).sort((a, b) => b.score - a.score);
+};
+
+// Routes
 app.get('/', (req, res) => {
-    res.render('index', { user: req.user, username: req.username, leaderboard, posts });
-});
+    let username = "Guest"; // Default if not set
+    res.render('index', { leaderboard, allPosts, username });
+})
 
-// ✅ Leaderboard Route
 app.get('/leaderboard', (req, res) => {
-    leaderboard.sort((a, b) => b.score - a.score);
     res.render('leaderboard', { leaderboard });
 });
 
-// ✅ Events Page (Challenges)
-app.get('/events', (req, res) => {
-    res.render('events', { challengeEntries });
+app.get('/challenges', (req, res) => {
+    res.render('challenges', { challenges, challengeEntries });
 });
 
-// ✅ Forum Page (Discussions)
+app.post('/challenges', upload.single("image"), (req, res) => {
+    let entry = {
+        username: req.body.username,
+        challenge: req.body.challenge,
+        image: req.file ? "/upload/" + req.file.filename : "",
+        story: req.body.story
+    };
+    challengeEntries.unshift(entry);
+    res.redirect('/challenges');
+});
+
+app.post('/upvote/:id', (req, res) => {
+    let postId = parseInt(req.params.id);
+    let post = allPosts.find(p => p.id === postId);
+
+    if (post) {
+        post.upvotes += 1;
+        updateLeaderboard(); // Update leaderboard based on upvotes
+    }
+
+    res.redirect('/');
+});
+
 app.get('/forum', (req, res) => {
-    res.render('forum', { posts });
+    res.render('forum', { allPosts });
 });
 
-// ✅ Submit a Forum Post
 app.post('/forum', upload.single("image"), (req, res) => {
     let newPost = {
-        id: posts.length + 1,
-        username: req.username,
+        id: allPosts.length + 1,
+        username: req.body.username,
         date: new Date().toLocaleString(),
-        title: req.body.title,
         message: req.body.textMessage,
-        image: req.file ? "/upload/" + req.file.filename : "",
-        votes: 0
+        imageUrl: req.file ? "/upload/" + req.file.filename : "",
+        upvotes: 0
     };
-    posts.unshift(newPost);
-    users[req.username].posts += 1;
-    res.redirect('/forum');
+    allPosts.unshift(newPost);
+    res.redirect('/');
 });
 
-// ✅ Upvote a Post
-app.post('/upvote/:id', (req, res) => {
-    let post = posts.find(p => p.id == req.params.id);
-    if (post) {
-        post.votes += 1;
-        users[post.username].score += 10;
-    }
-    res.redirect('/forum');
-});
-
-// ✅ Start Server
 app.listen(3000, () => {
     console.log('Server running on http://127.0.0.1:3000');
 });
