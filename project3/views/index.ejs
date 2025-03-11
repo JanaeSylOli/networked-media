@@ -1,30 +1,52 @@
-<head>
-    <title>class 13 🤍</title>
-    <link href="style.css" rel="stylesheet">
-</head>
-<body>
-    <div class="input-container">
-        <form method="POST" action="/upload" enctype="multipart/form-data">
-            <input type="text" name="textMessage" placeholder="leave a kind comment!">
-            <div class="controls-container">
-                <input type="file" name="theimage">
-                <input type="submit" name="sbtn" value="send">
-            </div>
-        </form>
-    </div>
-    <div class="messages-container">
-        <%# for(let i = 0; i< allPosts.length; i++%>
-        <%# post = allPosts[i] %>
-        <% allPosts.forEach( (post)=>{ %> 
-            <div class="post-item">
-                <div class="date"> <%= post.date %> </div>
-                <p class="text">  <%= post.text %>   </p>
-                <% if(post.imgUrl) { %>
-                    <img src="<%= post.imgUrl %>">
-                <% } %>
-            </div>
-        <% } ) %>
-        <% %>
-    </div>
-</body>
+<html>
+    <head>
+        <title>Boogeyman's Hide & Seek</title>
+        <link href="/styles.css" rel="stylesheet">
+    </head>
+    <body>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/leaderboard">Leaderboard</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/events">Events</a></li>
+            </ul>
+        </nav>
+        
+        <header>
+            <h1>Boogeyman's Hide & Seek</h1>
+            <p>Welcome to the ultimate forum for creatures of the dark!</p>
+        </header>
+        
+        <!-- Scrolling Leaderboard -->
+        <section class="leaderboard">
+            <h2>Top Boogeymen</h2>
+            <ul class="scrolling-list">
+                <% leaderboard.forEach(user => { %>
+                    <li><%= user.username %> - <%= user.score %> points</li>
+                <% }); %>
+            </ul>
+        </section>
+        
+        <!-- Posts Section -->
+        <section class="posts">
+            <h2>Latest Hiding Spots & Stories</h2>
+            <% allPosts.forEach(post => { %>
+                <div class="post-item">
+                    <div class="post-header">
+                        <strong><%= post.username %></strong> - <span><%= post.date %></span>
+                    </div>
+                    <p class="post-text"><%= post.message %></p>
+                    <% if (post.imageUrl) { %>
+                        <img src="<%= post.imageUrl %>" alt="User Image" class="post-image">
+                    <% } %>
+                </div>
+            <% }); %>
+        </section>
+        
+        <!-- Link to Forum Submission -->
+        <div class="post-button">
+            <a href="/forum">Submit Your Hide & Seek Story</a>
+        </div>
+    </body>
 </html>

@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title>Leaderboard</title>
+        <link href="/styles.css" rel="stylesheet">
+    </head>
+    <body>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/leaderboard">Leaderboard</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/events">Events</a></li>
+            </ul>
+        </nav>
+
+        <header>
+            <h1>Top Boogeymen</h1>
+            <p>These lurkers have mastered the art of hiding!</p>
+        </header>
+
+        <section class="leaderboard-container">
+            <ul class="scrolling-leaderboard">
+                <% leaderboard.forEach(user => { %>
+                    <li class="leaderboard-item">
+                        <span class="rank">👻</span>
+                        <strong><%= user.username %></strong> - <%= user.score %> points
+                    </li>
+                <% }); %>
+            </ul>
+        </section>
+    </body>
+</html>

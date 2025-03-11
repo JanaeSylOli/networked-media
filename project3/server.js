@@ -1,78 +1,75 @@
-// 1. library imports
-const express = require('express')
-const bodyParser = require('body-parser')
-const multer = require('multer')
+// server.js
+const express = require('express');
+const bodyParser = require('body-parser');
+const multer = require('multer');
+const path = require('path');
 
-// 2. app settings
-const app = express()
-const encodedParser = bodyParser.urlencoded({extended: true})
-const up = multer({dest: "public/upload"})
+const app = express();
+const port = 3000;
 
-app.use(express.static('public')) // setting the static file location to be public (css, front-end js, assets like images)
-app.use(encodedParser) // allows express to parse the body of the request (req.body)
-app.set("view engine", "ejs") // allows us to use ejs, specifically with render
+// Multer setup for file uploads
+const upload = multer({ dest: 'public/upload/' });
 
-let myPostArray = []
+// Middleware
+app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
 
-let p1 = {}
-let p2 = {}
+// Mock database
+let posts = [];
+let leaderboard = [
+    { username: 'ShadowLurker', score: 150 },
+    { username: 'ClosetCreeper', score: 120 },
+    { username: 'DarkWhisper', score: 100 }
+];
 
-// 3. routes
-app.get('/', (req, res)=>{
-    res.render('index.ejs', {allPosts: myPostArray})
-})
+// Routes
+app.get('/', (req, res) => {
+    res.render('index', { allPosts: posts, leaderboard });
+});
 
-app.get('/secret1', (req, res)=>{
-    res.render('form.ejs', {link: '/person1'})
-})
+app.get('/forum', (req, res) => {
+    res.render('forum');
+});
 
-app.post('/person1', up.fields([{name: "profpic", maxCount: 1}, {name: "media1img", maxCount: 1}]), (req, res)=>{
-    console.log(req.body)
-    p1.name = req.body.featurename
-    // console.log(req.files['profpic'][0].filename)
-    if(req.files['profpic']){
-        p1.profpic = "upload/" + req.files['profpic'][0].filename
-    } 
-    if(req.files['media1img']){
-        p1.media1Url = "upload/" + req.files['media1img'][0].filename
-    }
-    p1.media1text = req.body.media1text
-    res.redirect('/')
-})
+app.post('/submit', upload.single('image'), (req, res) => {
+    const { username, message } = req.body;
+    const newPost = {
+        username,
+        message,
+        imageUrl: req.file ? `/upload/${req.file.filename}` : null,
+        date: new Date().toLocaleString()
+    };
+    posts.unshift(newPost);
+    res.redirect('/');
+});
 
-app.get('/p1m1', (req, res)=>{
-    res.render('media.ejs', {img: p1.mediaUrl, text: p1.media1text})
-})
-app.get('/p2m1', (req, res)=>{
-    res.render('media.ejs', {img: p2.mediaUrl, text: p2.media1text})
-})
+app.get('/leaderboard', (req, res) => {
+    res.render('leaderboard', { leaderboard });
+});
 
-app.get('/secret2', (req, res)=>{
-    res.render('form.ejs', {link: '/person2'})
-})
+app.get('/profile', (req, res) => {
+    const userProfile = {
+        username: "DarkLurker",  // Replace with dynamic user data
+        rank: "Master of Shadows",
+        postCount: 10,  // Example number of posts
+        score: 250  // Example score
+    };
+    res.render('profile', userProfile);
+});
 
-app.post('/upload', up.single("theimage"), (req, res)=>{
-    let now = new Date()
+app.get('/events', (req, res) => {
+    const contestants = [
+        { username: "ShadowMaster", votes: 230, imageUrl: "/upload/shadow1.jpg" },
+        { username: "CreepingPhantom", votes: 185, imageUrl: "/upload/shadow2.jpg" },
+        { username: "DarkDweller", votes: 160, imageUrl: "/upload/shadow3.jpg" },
+        { username: "MidnightGhoul", votes: 140, imageUrl: "/upload/shadow4.jpg" },
+        { username: "SilentPhantom", votes: 130, imageUrl: "/upload/shadow5.jpg" }
+    ];
+    res.render('events', { contestants });
+});
 
-    // local temporary post obj that determines the structure of each element in the array
-    let post = {
-        text: req.body.textMessage,
-        date: now.toLocaleString()
-    }
-    // check if file exists
-    if(req.file){
-        // add the img location to the post object
-        post.imgUrl = "upload/" + req.file.filename
-    }
-
-    // adds to the front of the array so the posts will go in order from newest to oldest
-    myPostArray.unshift(post)
-    // redirect back to the home pages
-    res.redirect('/')
-})
-
-// 4. listener
-
+// Server listener
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server is live at http://127.0.0.1:${port}`);
 });

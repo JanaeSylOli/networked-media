@@ -1,25 +1,113 @@
-.input-container{
-    border: 5px solid grey;
-    padding: 10px;
-    margin: auto;
-    width: 60%;
+body {
+    background-color: #0a0a0a;
+    color: #e0e0e0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
-input[type="text"]{
-    width: 100%;
+/* Header */
+header {
+    background: linear-gradient(180deg, #111, #000);
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
 }
 
-.controls-container{
+/* Navigation Bar */
+nav {
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    padding-top: 10px;
+    justify-content: center;
+    background: #222;
+    padding: 10px 0;
 }
 
-input[type="submit"]{
-    border: none;
-    font-size: 16pt;
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #e0e0e0;
+    font-size: 18px;
+    padding: 10px 15px;
+    transition: background 0.3s ease-in-out;
+}
+
+nav ul li a:hover {
+    background: #444;
+    border-radius: 5px;
+}
+
+/* Leaderboard Styling */
+.leaderboard-container {
+    margin: 20px auto;
+    width: 60%;
+    padding: 20px;
+    background: #111;
     border-radius: 10px;
-    cursor: pointer;
-    padding: 5px 20px;
+}
+
+.scrolling-leaderboard {
+    max-height: 200px;
+    overflow-y: auto;
+    background: #222;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.leaderboard-item {
+    padding: 10px;
+    border-bottom: 1px solid #444;
+}
+
+/* Post Section */
+.post-item {
+    background: #111;
+    padding: 15px;
+    margin: 10px auto;
+    width: 50%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+    transition: transform 0.3s ease-in-out;
+}
+
+.post-item:hover {
+    transform: scale(1.05);
+}
+
+.post-image {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+/* Event Styling */
+.event-container {
+    margin: 20px auto;
+    width: 60%;
+    background: #222;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.event-list {
+    list-style: none;
+    padding: 0;
+}
+
+.contestant-item {
+    padding: 10px;
+    border-bottom: 1px solid #444;
+}
+
+.contestant-image {
+    max-width: 100%;
+    border-radius: 5px;
 }

@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <title>Submit Your Hide & Seek Story</title>
+        <link href="/styles.css" rel="stylesheet">
+    </head>
+    <body>
+        <nav class="hamburger-menu">
+            <input type="checkbox" id="menu-toggle">
+            <label for="menu-toggle" class="menu-icon">☰</label>
+            <ul class="menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/leaderboard">Leaderboard</a></li>
+                <li><a href="/profile">Profile</a></li>
+            </ul>
+        </nav>
+
+        <header>
+            <h1>Share Your Hiding Spot or Encounter</h1>
+            <p>Tell us about your best lurking moment!</p>
+        </header>
+
+        <div class="input-container">
+            <form method="POST" action="/submit" enctype="multipart/form-data">
+                <input type="text" name="username" placeholder="Your name (or shadow name)">
+                <textarea name="message" placeholder="Describe your hiding spot or a spooky encounter..."></textarea>
+                <div class="controls-container">
+                    <input type="file" name="image">
+                    <input type="submit" name="sbtn" value="Share">
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
