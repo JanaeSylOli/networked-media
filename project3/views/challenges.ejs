@@ -1,0 +1,54 @@
+<html>
+<head>
+    <title>Challenges - Boogeyman’s Hide & Seek</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/forum">Forum</a></li>
+            <li><a href="/challenges">Challenges</a></li>
+            <li><a href="/leaderboard">Leaderboard</a></li>
+        </ul>
+    </nav>
+    <h1>Challenges 🎭</h1>
+
+    <% if (error) { %>
+        <p class="error"><%= error %></p>
+    <% } %>
+
+    <% challenges.forEach(challenge => { %>
+        <div class="challenge-box">
+            <h3><%= challenge.title %></h3>
+            <p>Deadline: <%= challenge.deadline %></p>
+            <p>Prize: <%= challenge.prize %></p>
+
+            <h4>Entries:</h4>
+            <ul>
+                <% challenge.entries.forEach(entry => { %>
+                    <li>
+                        <strong><%= entry.username %></strong>: <%= entry.spot %>
+                        <img src="<%= entry.imageUrl %>" alt="Hiding spot" width="200">
+                        <strong><%= entry.votes %> votes</strong>
+                        <form action="/vote-challenge" method="POST">
+                            <input type="hidden" name="challengeId" value="<%= challenge.id %>">
+                            <input type="hidden" name="entryId" value="<%= entry.id %>">
+                            <button type="submit">Vote</button>
+                        </form>
+                    </li>
+                <% }) %>
+            </ul>
+
+            <h4>Submit Your Entry:</h4>
+            <form action="/challenge-entry" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="challengeId" value="<%= challenge.id %>">
+                <input type="text" name="username" placeholder="Your Name" required>
+                <input type="text" name="hidingSpot" placeholder="Describe your hiding spot" required>
+                <input type="file" name="image" accept="image/*" required>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    <% }) %>
+</body>
+</html>

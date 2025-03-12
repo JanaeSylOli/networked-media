@@ -1,40 +1,45 @@
 <html>
 <head>
-    <title>Forum</title>
+    <title>Forum - Boogeyman’s Hide & Seek</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
+    <div class="fog-container">
+        <div class="fog"></div>
+    </div>
+    
     <nav>
-        <a href="/">Home</a>
-        <a href="/leaderboard">Leaderboard</a>
-        <a href="/forum">Forum</a>
-        <a href="/events">Events</a>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/forum">Forum</a></li>
+            <li><a href="/challenges">Challenges</a></li>
+            <li><a href="/leaderboard">Leaderboard</a></li>
+        </ul>
     </nav>
 
-    <h2>💬 Shadow Talk Forum</h2>
+    <h1>🗣️ Full Scare Stories Forum</h1>
 
-    <form action="/forum" method="POST" enctype="multipart/form-data">
-        <input type="text" name="title" placeholder="Post Title" required>
-        <textarea name="textMessage" placeholder="Share your hiding story..." required></textarea>
-        <input type="file" name="image">
+    <% if (error) { %>
+        <p class="error"><%= error %></p>
+    <% } %>
+
+    <ul>
+        <% forumPosts.forEach(post => { %>
+            <li>
+                <strong><%= post.username %></strong>: <%= post.text %> - <strong><%= post.votes %> votes</strong>
+                <form action="/vote-forum" method="POST">
+                    <input type="hidden" name="postId" value="<%= post.id %>">
+                    <button type="submit">Upvote</button>
+                </form>
+            </li>
+        <% }) %>
+    </ul>
+
+    <h2>Submit Your Scariest Story</h2>
+    <form action="/forum" method="POST">
+        <input type="text" name="username" placeholder="Your Name" required>
+        <textarea name="postText" placeholder="Tell your scary story..." required></textarea>
         <button type="submit">Submit</button>
     </form>
-
-    <h2>📢 Latest Posts</h2>
-    <section class="posts">
-        <h2>Latest Hiding Stories</h2>
-        <ul>
-            <% allPosts.forEach(post => { %>
-                <li class="post-item">
-                    <strong><%= post.username %></strong> - <span><%= post.date %></span>
-                    <p><%= post.message %></p>
-                    <p>Upvotes: <%= post.upvotes %></p>
-                    <form action="/upvote/<%= post.id %>" method="POST">
-                        <button type="submit">👍 Upvote (<%= post.upvotes %>)</button>
-                    </form>
-                </li>
-            <% }) %>
-        </ul>
-    </section>
 </body>
 </html>

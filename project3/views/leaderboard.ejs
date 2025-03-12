@@ -1,24 +1,38 @@
 <html>
 <head>
-    <title>Leaderboard</title>
+    <title>Leaderboard - Boogeyman’s Hide & Seek</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <nav>
-        <a href="/">Home</a>
-        <a href="/leaderboard">Leaderboard</a>
-        <a href="/forum">Forum</a>
-        <a href="/events">Events</a>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/forum">Forum</a></li>
+            <li><a href="/challenges">Challenges</a></li>
+            <li><a href="/leaderboard">Leaderboard</a></li>
+        </ul>
     </nav>
 
-    <h2>🔥 Most Popular Stories🔥</h2>
-<ul>
-    <% leaderboard.forEach((player, index) => { %>
-        <li class="leaderboard-item">
-            <strong><%= index + 1 %>. <%= player.username %></strong>
-            <span>💡 Upvotes: <%= player.score %></span>
-        </li>
-    <% }) %>
-</ul>
+    <h1>🏆 Leaderboard</h1>
+
+    <h2>Top Scare Stories</h2>
+    <ul>
+        <% leaderboard.filter(entry => entry.text).forEach(entry => { %>
+            <li>
+                <strong><%= entry.username %></strong>: <%= entry.text %> - <strong><%= entry.votes %> votes</strong>
+            </li>
+        <% }) %>
+    </ul>
+
+    <h2>Top Challenge Entries</h2>
+    <ul>
+        <% leaderboard.filter(entry => entry.spot).forEach(entry => { %>
+            <li>
+                <strong><%= entry.username %></strong>: <%= entry.spot %>
+                <img src="<%= entry.imageUrl %>" alt="Hiding Spot" width="200">
+                <strong><%= entry.votes %> votes</strong>
+            </li>
+        <% }) %>
+    </ul>
 </body>
 </html>

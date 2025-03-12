@@ -1,175 +1,166 @@
-/* GENERAL STYLES */
-body {
-    background: #0a0a0a;
-    color: white;
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
+nav {
+    background-color: #222;
+    padding: 10px;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
     padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px 15px;
+    transition: 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #ff7043;
+    border-radius: 5px;
+}
+
+.hero-banner {
+    text-align: center;
+    background-color: #000;
+    color: #ff7043;
+    padding: 50px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+body {
+    background-color: #000;
+    color: #ff7043;
+    font-family: "Creepster", cursive;
     text-align: center;
     overflow-x: hidden;
 }
 
-/* NAVIGATION BAR */
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(10, 10, 10, 0.9);
-    padding: 15px 30px;
-    box-shadow: 0 4px 20px rgba(0, 255, 204, 0.6);
-}
-nav a {
-    color: white;
-    text-decoration: none;
-    font-size: 20px;
-    padding: 12px 18px;
-    transition: all 0.3s ease-in-out;
-    font-weight: bold;
-}
-nav a:hover {
-    color: #00ffcc;
-    text-shadow: 0px 0px 10px #00ffcc;
+/* Floating Fog Effect */
+.fog-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
 }
 
-/* HERO SECTION */
-.hero {
-    background: url('/path-to-background-image.jpg') center center / cover no-repeat;
-    text-align: center;
-    padding: 120px 20px;
-    position: relative;
-}
-.hero h2 {
-    font-size: 50px;
-    font-weight: bold;
-    color: #00ffcc;
-    text-shadow: 0px 0px 15px rgba(0, 255, 204, 0.8);
-    animation: float 3s infinite ease-in-out;
-}
-.hero p {
-    font-size: 22px;
-    margin-top: 10px;
+.fog {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: url("/images/fog.png") repeat-x;
+    opacity: 0.3;
+    animation: moveFog 20s linear infinite;
 }
 
-/* CALL-TO-ACTION BUTTONS */
-.cta {
-    background: #00ffcc;
-    color: black;
-    font-size: 22px;
-    padding: 15px 25px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.3s;
-}
-.cta:hover {
-    background: #009688;
-    box-shadow: 0px 0px 15px rgba(0, 255, 204, 0.8);
+@keyframes moveFog {
+    from {
+        transform: translateX(0%);
+    }
+    to {
+        transform: translateX(-50%);
+    }
 }
 
-/* LEADERBOARD STYLES */
-.leaderboard-container {
-    text-align: center;
-    padding: 40px;
-}
-.scrolling-leaderboard {
-    max-height: 300px;
-    overflow-y: auto;
-    list-style: none;
-    padding: 0;
-    text-align: left;
-}
-.leaderboard-item {
-    background: #111;
-    padding: 15px;
-    margin: 10px;
-    border-radius: 10px;
-    transition: transform 0.3s ease;
-    font-size: 22px;
-    color: #00ffcc;
-    font-weight: bold;
-    text-shadow: 0px 0px 10px #00ffcc;
-}
-.leaderboard-item:hover {
-    transform: scale(1.05);
+/* Custom Cursor */
+body {
+    cursor: url("/images/cursor.png"), auto;
 }
 
-/* EVENTS & PRIZES */
-.events {
-    text-align: center;
-    padding: 50px;
-    background: linear-gradient(black, #111);
-}
-.event-list {
-    list-style: none;
-    padding: 0;
-}
-.event-item {
-    background: #222;
-    padding: 20px;
-    margin: 15px;
-    border-radius: 10px;
-    font-size: 24px;
-    color: #ffcc00;
-    text-shadow: 0px 0px 10px #ffcc00;
-    transition: transform 0.3s;
-}
-.event-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
+/* Cursor Trail Effect */
+.cursor-trail {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: red;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.7;
+    animation: fadeOut 0.5s ease-out;
 }
 
-/* FORUM STYLES */
-.posts {
-    padding: 40px;
-}
-.post-item {
-    background: #222;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 255, 204, 0.7);
-    transition: transform 0.3s ease;
-    margin-bottom: 20px;
-    font-size: 22px;
-    color: white;
-}
-.post-item:hover {
-    transform: scale(1.05);
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
 }
 
-/* BUTTON STYLES */
+@keyframes flicker {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
 button {
-    background: #ff00ff;
-    color: white;
-    font-size: 20px;
-    padding: 10px 20px;
-    border-radius: 50px;
-    border: none;
-    cursor: pointer;
-    transition: 0.3s;
-}
-button:hover {
-    background: #ff33cc;
-    box-shadow: 0px 0px 15px rgba(255, 0, 255, 0.8);
-}
-
-/* FOOTER */
-footer {
-    text-align: center;
-    padding: 20px;
-    background: black;
-    font-size: 16px;
+    background-color: #ff4500;
     color: #fff;
+    border: none;
+    padding: 8px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0 0 5px #ff4500;
 }
 
-/* FLOATING ANIMATION */
-@keyframes float {
-    0% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(10px);
-    }
-    100% {
-        transform: translateY(0px);
-    }
+button:hover {
+    box-shadow: 0 0 15px #ff4500, 0 0 30px #ff7043;
+    transform: scale(1.05);
+}
+button:active {
+    box-shadow: 0 0 5px #ff4500;
+    transform: scale(1);
+}
+
+/*h1, h2 {
+    text-shadow: 0 0 5px #ff7043, 0 0 10px #ff4500;
+    animation: flicker 1.5s infinite alternate;
+} */
+
+h1, h2 {
+    color: #ff4500;
+    font-family: 'Creepster', cursive;
+    text-shadow: 0 0 5px #ff7043, 0 0 10px #ff4500;
+    animation: dripEffect 2s infinite alternate;
+}
+
+@keyframes dripEffect {
+    0% { text-shadow: 0 0 5px #ff7043; }
+    50% { text-shadow: 0 0 10px #ff0000; }
+    100% { text-shadow: 0 0 5px #ff7043; }
+}
+
+/* Optimize Fog Animation */
+.fog {
+    will-change: transform;
+    animation: moveFog 20s linear infinite;
+}
+
+/* Optimize Neon Flicker */
+@keyframes flicker {
+    0% { opacity: 1; text-shadow: 0 0 5px #ff7043; }
+    50% { opacity: 0.8; text-shadow: 0 0 15px #ff4500; }
+    100% { opacity: 1; text-shadow: 0 0 5px #ff7043; }
+}
+
+/* Background Animation */
+@keyframes backgroundPulse {
+    0% { background-color: #000; }
+    50% { background-color: #0a0a0a; }
+    100% { background-color: #000; }
+}
+
+body {
+    animation: backgroundPulse 10s infinite alternate;
 }

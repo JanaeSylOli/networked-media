@@ -1,104 +1,124 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const multer = require('multer');
+const express = require("express");
+const bodyParser = require("body-parser");
+const multer = require("multer");
+const path = require("path");
 
 const app = express();
-const upload = multer({ dest: "public/upload" });
+const PORT = 3000;
 
-app.use(express.static('public'));
-app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
+app.use(express.static("public"));
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// Data Storage
-let leaderboard = [
-    { username: "ShadowMaster", score: 500 },
-    { username: "CreepingPhantom", score: 420 },
-    { username: "DarkDweller", score: 350 }
-];
+// Setup Multer for file uploads
+const storage = multer.diskStorage({
+    destination: "public/uploads/",
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname)); // Unique filename
+    }
+});
 
-let allPosts = [
-    { id: 1, username: "NightWalker", date: "March 10, 2025", message: "Best hiding spot under the stairs!", imageUrl: "", upvotes: 3 }
+const upload = multer({ storage: storage });
+
+// In-memory storage (resets on server restart)
+let forumPosts = [
+    { id: 1, username: "GhostHunter", text: "I hid under the stairs, but something was breathing next to me...", votes: 5 },
+    { id: 2, username: "DarkSeeker", text: "The closet door creaked open, and I wasn’t the one who opened it.", votes: 8 }
 ];
 
 let challenges = [
-    { title: "Shadow Stalker", description: "Stay hidden for 30 minutes without being found!", prize: "Cloak of Invisibility" },
-    { title: "Hidden Reaction", description: "Don’t react even if someone calls your name!", prize: "Stealth Champion Badge" },
-    { title: "Master of Disguise", description: "Blend in with your surroundings like a pro!", prize: "Phantom Mask" }
+    { id: 1, title: "Best hiding spot in an abandoned house?", deadline: "March 31", prize: "$50 Gift Card", entries: [] },
+    { id: 2, title: "Creepiest place to hide in a forest?", deadline: "April 15", prize: "Mystery Horror Box", entries: [] }
 ];
 
-let challengeEntries = [];
+let leaderboard = [];
 
-// Function to update leaderboard based on upvotes
-const updateLeaderboard = () => {
-    let userUpvotes = {};
-
-    allPosts.forEach(post => {
-        if (!userUpvotes[post.username]) {
-            userUpvotes[post.username] = 0;
-        }
-        userUpvotes[post.username] += post.upvotes;
-    });
-
-    leaderboard = Object.keys(userUpvotes).map(username => ({
-        username,
-        score: userUpvotes[username]
-    })).sort((a, b) => b.score - a.score);
-};
-
-// Routes
-app.get('/', (req, res) => {
-    let username = "Guest"; // Default if not set
-    res.render('index', { leaderboard, allPosts, username });
-})
-
-app.get('/leaderboard', (req, res) => {
-    res.render('leaderboard', { leaderboard });
+// 📌 Homepage
+app.get("/", (req, res) => {
+    const latestForumPosts = forumPosts.slice(-5);
+    const latestChallenge = challenges.length > 0 ? challenges[challenges.length - 1] : null;
+    res.render("index", { latestForumPosts, latestChallenge, error: null });
 });
 
-app.get('/challenges', (req, res) => {
-    res.render('challenges', { challenges, challengeEntries });
+// 📌 Forum Page
+app.get("/forum", (req, res) => {
+    res.render("forum", { forumPosts, error: null });
 });
 
-app.post('/challenges', upload.single("image"), (req, res) => {
-    let entry = {
-        username: req.body.username,
-        challenge: req.body.challenge,
-        image: req.file ? "/upload/" + req.file.filename : "",
-        story: req.body.story
-    };
-    challengeEntries.unshift(entry);
-    res.redirect('/challenges');
+// 📌 Challenges Page
+app.get("/challenges", (req, res) => {
+    res.render("challenges", { challenges, error: null });
 });
 
-app.post('/upvote/:id', (req, res) => {
-    let postId = parseInt(req.params.id);
-    let post = allPosts.find(p => p.id === postId);
+// 📌 Leaderboard Page
+app.get("/leaderboard", (req, res) => {
+    leaderboard = [...forumPosts, ...challenges.flatMap(c => c.entries)]
+        .sort((a, b) => b.votes - a.votes)
+        .slice(0, 10);
+    res.render("leaderboard", { leaderboard });
+});
 
-    if (post) {
-        post.upvotes += 1;
-        updateLeaderboard(); // Update leaderboard based on upvotes
+// 📝 Submit a new forum post
+app.post("/forum", (req, res) => {
+    const username = req.body.username.trim();
+    const postText = req.body.postText.trim();
+
+    if (!username || !postText) {
+        return res.render("forum", { forumPosts, error: "Username and story cannot be empty!" });
     }
 
-    res.redirect('/');
+    forumPosts.push({ id: forumPosts.length + 1, username, text: postText, votes: 0 });
+    res.redirect("/forum");
 });
 
-app.get('/forum', (req, res) => {
-    res.render('forum', { allPosts });
+// ⬆️ Upvote a forum post
+app.post("/vote-forum", (req, res) => {
+    const postId = parseInt(req.body.postId);
+    const post = forumPosts.find(p => p.id === postId);
+    if (post) post.votes++;
+    res.redirect(req.headers.referer || "/");
 });
 
-app.post('/forum', upload.single("image"), (req, res) => {
-    let newPost = {
-        id: allPosts.length + 1,
-        username: req.body.username,
-        date: new Date().toLocaleString(),
-        message: req.body.textMessage,
-        imageUrl: req.file ? "/upload/" + req.file.filename : "",
-        upvotes: 0
-    };
-    allPosts.unshift(newPost);
-    res.redirect('/');
+// 📝 Submit a hiding spot for a challenge (with image upload)
+app.post("/challenge-entry", upload.single("image"), (req, res) => {
+    const challengeId = parseInt(req.body.challengeId);
+    const username = req.body.username.trim();
+    const hidingSpot = req.body.hidingSpot.trim();
+    const imageFile = req.file;
+
+    if (!username || !hidingSpot || !imageFile) {
+        return res.render("challenges", { challenges, error: "All fields are required!" });
+    }
+
+    const challenge = challenges.find(c => c.id === challengeId);
+    if (challenge) {
+        challenge.entries.push({
+            id: challenge.entries.length + 1,
+            username,
+            spot: hidingSpot,
+            imageUrl: `/uploads/${imageFile.filename}`, // Path to display image
+            votes: 0
+        });
+    }
+
+    res.redirect("/challenges");
 });
 
-app.listen(3000, () => {
-    console.log('Server running on http://127.0.0.1:3000');
+// ⬆️ Upvote a challenge entry
+app.post("/vote-challenge", (req, res) => {
+    const challengeId = parseInt(req.body.challengeId);
+    const entryId = parseInt(req.body.entryId);
+
+    const challenge = challenges.find(c => c.id === challengeId);
+    if (challenge) {
+        const entry = challenge.entries.find(e => e.id === entryId);
+        if (entry) entry.votes++;
+    }
+
+    res.redirect(req.headers.referer || "/");
+});
+
+// Start the server
+app.listen(3000, "127.0.0.1", () => {
+    console.log("Server running on http://127.0.0.1:3000");
 });

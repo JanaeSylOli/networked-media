@@ -1,44 +1,58 @@
 <html>
 <head>
-    <title>Welcome to Shadow Talk</title>
+    <title>Boogeyman’s Hide & Seek</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
+    <div class="fog-container">
+        <div class="fog"></div>
+    </div>
+    
     <nav>
-        <a href="/">Home</a>
-        <a href="/leaderboard">Leaderboard</a>
-        <a href="/forum">Forum</a>
-        <a href="/events">Events</a>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/forum">Forum</a></li>
+            <li><a href="/challenges">Challenges</a></li>
+            <li><a href="/leaderboard">Leaderboard</a></li>
+        </ul>
     </nav>
 
-    <section class="hero">
-        <h2>Welcome, <%= username || "Guest" %> 👻</h2>
-        <p>Think you can be the best at hiding?</p>
-        <a href="/events" class="cta">Join a Challenge</a>
+    <header class="hero-banner">
+        <h1>So you think you can scare?</h1>
+    </header>
+
+    <section>
+        <h2>🗣️ Latest Scare Stories</h2>
+        <ul>
+            <% latestForumPosts.forEach(post => { %>
+                <li>
+                    <strong><%= post.username %></strong>: <%= post.text %> - <strong><%= post.votes %> votes</strong>
+                    <form action="/vote-forum" method="POST">
+                        <input type="hidden" name="postId" value="<%= post.id %>">
+                        <button type="submit">Upvote</button>
+                    </form>
+                </li>
+            <% }) %>
+        </ul>
+        <a href="/forum" class="more-btn">More Forum Entries</a>
     </section>
 
-    <h2>🏆 Leaderboard</h2>
-    <ul>
-        <% leaderboard.forEach(user => { %>
-            <li><strong><%= user.username %></strong> - <%= user.score %> pts</li>
-        <% }) %>
-    </ul>
-
-    <h2>📢 Latest Hiding Spots</h2>
-    <section class="posts">
-        <% posts.forEach(post => { %>
-            <div class="post">
-                <h3><%= post.title %></h3>
-                <p><strong><%= post.username %></strong> - <%= post.date %></p>
-                <p><%= post.message %></p>
-                <% if (post.image) { %>
-                    <img src="<%= post.image %>" alt="Hiding Spot">
-                <% } %>
-                <form action="/upvote/<%= post.id %>" method="POST">
-                    <button type="submit">👍 Upvote (<%= post.votes %>)</button>
-                </form>
+    <section>
+        <h2>🎭 Latest Challenge Entry</h2>
+        <% if (latestChallenge) { %>
+            <div class="challenge-box">
+                <h3><%= latestChallenge.title %></h3>
+                <a href="/challenges">View Challenges</a>
             </div>
-        <% }) %>
+        <% } else { %>
+            <p>No challenge entries yet.</p>
+        <% } %>
     </section>
+
+    <div class="fog-container">
+        <div class="fog"></div>
+    </div>
+
+    <script src="/js/script.js"></script>
 </body>
 </html>
