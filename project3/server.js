@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const multer = require('multer'); // For image uploads
 const app = express();
-const port = 3000;
+const port = 3001;
 
 // Configure image upload storage
 const storage = multer.diskStorage({
