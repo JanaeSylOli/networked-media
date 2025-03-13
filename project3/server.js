@@ -55,15 +55,17 @@ let challengeEntries = [
     }
 ];
 
-// Forum Page Route
+// Forum Page 
 app.get('/forum', (req, res) => {
-    res.render('forum', { forumEntries: forumPosts });
+    const sortedStories = [...forumPosts].sort((a, b) => b.votes - a.votes);
+    res.render('forum', { forumEntries: sortedStories });
 });
 
-// Homepage Route
+// Homepage 
 app.get('/', (req, res) => {
     const sortedStories = [...forumPosts].sort((a, b) => b.votes - a.votes).slice(0, 5);
-    res.render('index', { forumPosts: sortedStories });
+    const latestChallengeEntry = challengeEntries.length > 0 ? challengeEntries[challengeEntries.length - 1] : null;
+    res.render('index', { forumPosts: sortedStories, latestChallengeEntry, challengeEntries });
 });
 
 // Submit a new forum post
@@ -75,14 +77,16 @@ app.post('/forum', upload.single('image'), (req, res) => {
     res.redirect('/');
 });
 
-// Upvote forum entry (updates both index and forum)
+// Upvote forum entry
 app.post('/forum/upvote/:index', (req, res) => {
     const index = parseInt(req.params.index);
     if (forumPosts[index]) {
         forumPosts[index].votes++;
+        forumPosts.sort((a, b) => b.votes - a.votes); 
+        res.json({ votes: forumPosts[index].votes }); 
+    } else {
+        res.status(404).json({ error: "Post not found" });
     }
-    forumPosts.sort((a, b) => b.votes - a.votes); // Keep highest votes first
-    res.redirect('/');
 });
 
 // Challenges Page Route
@@ -96,9 +100,31 @@ app.get('/challenges', (req, res) => {
 
 // Submit a challenge entry
 app.post('/challenges', upload.single('challengeImage'), (req, res) => {
-    const { username, story } = req.body;
+    const { username, story, challengeName } = req.body;
     const image = req.file ? `/uploads/${req.file.filename}` : '/images/default.jpg';
-    challengeEntries.push({ username, story, image, votes: 0 });
+    challengeEntries.push({ username, story, challengeName, image, votes: 0 });
     challengeEntries.sort((a, b) => b.votes - a.votes);
     res.redirect('/challenges');
+});
+
+// Upvote challenge entry
+app.post('/challenges/upvote/:index', (req, res) => {
+    const index = parseInt(req.params.index);
+    if (challengeEntries[index]) {
+        challengeEntries[index].votes++;
+    }
+    challengeEntries.sort((a, b) => b.votes - a.votes); 
+    res.redirect('back'); 
+});
+
+// Leaderboard Page Route
+app.get('/leaderboard', (req, res) => {
+    const sortedForum = [...forumPosts].sort((a, b) => b.votes - a.votes).slice(0, 5); 
+    const sortedChallenges = [...challengeEntries].sort((a, b) => b.votes - a.votes).slice(0, 5); 
+    res.render('leaderboard', { sortedForum, sortedChallenges });
+});
+
+// Start Server
+app.listen(port, () => {
+    console.log(`Server running at http://127.0.0.1:${port}`);
 });
