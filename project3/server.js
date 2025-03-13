@@ -21,13 +21,13 @@ app.set('view engine', 'ejs');
 // Preloaded forum posts
 let forumPosts = [
     {
-        username: "Boogeyman #1",
+        username: "OOgala Boogala",
         story: "I was hiding in the hallway, waiting to scare someone... then I sneezed. Busted.",
         image: "/images/hall-way.png",
         votes: 2
     },
     {
-        username: "Boogeyman #2",
+        username: "Fresh Boogey 96",
         story: "Thought hiding in the fridge would be cool. Turns out, my glowing eyes gave me away.",
         image: "/images/In-the-fridge.png",
         votes: 5
@@ -73,19 +73,18 @@ app.post('/forum', upload.single('image'), (req, res) => {
     const { username, story } = req.body;
     const image = req.file ? `/uploads/${req.file.filename}` : '/images/default.jpg';
     forumPosts.push({ username, story, image, votes: 0 });
-    forumPosts.sort((a, b) => b.votes - a.votes); // Keep highest votes first
+    forumPosts.sort((a, b) => b.votes - a.votes); 
     res.redirect('/');
 });
 
-// Upvote forum entry
+// Upvote forum entry (
 app.post('/forum/upvote/:index', (req, res) => {
     const index = parseInt(req.params.index);
     if (forumPosts[index]) {
         forumPosts[index].votes++;
-        forumPosts.sort((a, b) => b.votes - a.votes); 
         res.json({ votes: forumPosts[index].votes }); 
     } else {
-        res.status(404).json({ error: "Post not found" });
+        res.status(404).json({ error: 'Post not found' });
     }
 });
 
