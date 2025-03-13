@@ -1,7 +1,7 @@
-<html>
+<html lang="en">
 <head>
-    <title>Leaderboard - Boogeyman’s Hide & Seek</title>
     <link rel="stylesheet" href="/styles.css">
+    <title>Leaderboard</title>
 </head>
 <body>
     <nav>
@@ -13,26 +13,26 @@
         </ul>
     </nav>
 
-    <h1>🏆 Leaderboard</h1>
+    <h1>Leaderboard</h1>
 
-    <h2>Top Scare Stories</h2>
+    <h2>Top Scary Stories</h2>
     <ul>
-        <% leaderboard.filter(entry => entry.text).forEach(entry => { %>
+        <% sortedForum.forEach(story => { %>
             <li>
-                <strong><%= entry.username %></strong>: <%= entry.text %> - <strong><%= entry.votes %> votes</strong>
+                <img src="<%= story.image %>" width="100">
+                <strong><%= story.username %></strong>: <%= story.story %> (Votes: <%= story.votes %>)
             </li>
-        <% }) %>
+        <% }); %>
     </ul>
 
     <h2>Top Challenge Entries</h2>
     <ul>
-        <% leaderboard.filter(entry => entry.spot).forEach(entry => { %>
+        <% sortedChallenges.forEach(entry => { %>
             <li>
-                <strong><%= entry.username %></strong>: <%= entry.spot %>
-                <img src="<%= entry.imageUrl %>" alt="Hiding Spot" width="200">
-                <strong><%= entry.votes %> votes</strong>
+                <img src="<%= entry.image %>" width="150">
+                <strong><%= entry.username %></strong> entered <%= entry.challengeName %> (Votes: <%= entry.votes %>)
             </li>
-        <% }) %>
+        <% }); %>
     </ul>
 </body>
 </html>

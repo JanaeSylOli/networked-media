@@ -1,13 +1,10 @@
-<html>
+<html lang="en">
 <head>
-    <title>Forum - Boogeyman’s Hide & Seek</title>
+    <title>Boogeyman’s Hide & Seek | Forum</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <div class="fog-container">
-        <div class="fog"></div>
-    </div>
-    
+
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
@@ -17,29 +14,33 @@
         </ul>
     </nav>
 
-    <h1>🗣️ Full Scare Stories Forum</h1>
+    <section class="forum-section">
+        <h1>💬 Full Scare Stories Forum</h1>
 
-    <% if (error) { %>
-        <p class="error"><%= error %></p>
-    <% } %>
-
-    <ul>
-        <% forumPosts.forEach(post => { %>
-            <li>
-                <strong><%= post.username %></strong>: <%= post.text %> - <strong><%= post.votes %> votes</strong>
+        <% forumEntries.forEach((entry, index) => { %>
+            <div class="forum-entry">
+                <img src="<%= entry.image %>" alt="Scary Image">
+                <div class="entry-text">
+                    <p><strong><%= entry.username %>:</strong> <%= entry.text %></p>
+                    <p><strong>Votes:</strong> <%= entry.votes %></p>
+                </div>
                 <form action="/vote-forum" method="POST">
-                    <input type="hidden" name="postId" value="<%= post.id %>">
-                    <button type="submit">Upvote</button>
+                    <input type="hidden" name="index" value="<%= index %>">
+                    <button type="submit">Upvote 👆</button>
                 </form>
-            </li>
+            </div>
         <% }) %>
-    </ul>
+    </section>
 
-    <h2>Submit Your Scariest Story</h2>
-    <form action="/forum" method="POST">
-        <input type="text" name="username" placeholder="Your Name" required>
-        <textarea name="postText" placeholder="Tell your scary story..." required></textarea>
-        <button type="submit">Submit</button>
-    </form>
+    <section class="submit-form">
+        <h2>Submit Your Scariest Story</h2>
+        <form action="/submit-forum" method="POST" enctype="multipart/form-data">
+            <input type="text" name="username" placeholder="Your Name" required>
+            <textarea name="text" placeholder="Tell your scary story..." required></textarea>
+            <input type="file" name="image">
+            <button type="submit">Submit</button>
+        </form>
+    </section>
+
 </body>
 </html>

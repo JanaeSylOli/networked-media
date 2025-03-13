@@ -1,7 +1,7 @@
-<html>
+<html lang="en">
 <head>
-    <title>Challenges - Boogeyman’s Hide & Seek</title>
     <link rel="stylesheet" href="/styles.css">
+    <title>Challenges</title>
 </head>
 <body>
     <nav>
@@ -12,43 +12,38 @@
             <li><a href="/leaderboard">Leaderboard</a></li>
         </ul>
     </nav>
-    <h1>Challenges 🎭</h1>
 
-    <% if (error) { %>
-        <p class="error"><%= error %></p>
-    <% } %>
+    <h1>🎭 Spooky Challenges</h1>
 
-    <% challenges.forEach(challenge => { %>
-        <div class="challenge-box">
-            <h3><%= challenge.title %></h3>
-            <p>Deadline: <%= challenge.deadline %></p>
-            <p>Prize: <%= challenge.prize %></p>
+    <ul>
+        <% challenges.forEach(challenge => { %>
+            <li>
+                <strong><%= challenge.name %></strong> - Deadline: <%= challenge.deadline %> - Prize: <%= challenge.prize %>
+            </li>
+        <% }); %>
+    </ul>
 
-            <h4>Entries:</h4>
-            <ul>
-                <% challenge.entries.forEach(entry => { %>
-                    <li>
-                        <strong><%= entry.username %></strong>: <%= entry.spot %>
-                        <img src="<%= entry.imageUrl %>" alt="Hiding spot" width="200">
-                        <strong><%= entry.votes %> votes</strong>
-                        <form action="/vote-challenge" method="POST">
-                            <input type="hidden" name="challengeId" value="<%= challenge.id %>">
-                            <input type="hidden" name="entryId" value="<%= entry.id %>">
-                            <button type="submit">Vote</button>
-                        </form>
-                    </li>
-                <% }) %>
-            </ul>
+    <h2>Submit Challenge Entry</h2>
+    <form action="/challenges" method="POST" enctype="multipart/form-data">
+        <input type="text" name="username" placeholder="Your Name" required>
+        <textarea name="story" placeholder="Describe your challenge entry..." required></textarea>
+        <input type="file" name="challengeImage" accept="image/*">
+        <button type="submit">Enter Challenge</button>
+    </form>
 
-            <h4>Submit Your Entry:</h4>
-            <form action="/challenge-entry" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="challengeId" value="<%= challenge.id %>">
-                <input type="text" name="username" placeholder="Your Name" required>
-                <input type="text" name="hidingSpot" placeholder="Describe your hiding spot" required>
-                <input type="file" name="image" accept="image/*" required>
-                <button type="submit">Submit</button>
-            </form>
-        </div>
-    <% }) %>
+    <h2>Challenge Submissions</h2>
+    <ul>
+        <% challengeEntries.forEach((entry, index) => { %>
+            <li class="forum-entry">
+                <img src="<%= entry.image %>" width="200">
+                <div class="forum-text">
+                    <strong><%= entry.username %></strong> entered <%= entry.challengeName %> - "<%= entry.story %>" (Votes: <%= entry.votes %>)
+                    <form action="/challenges/upvote/<%= index %>" method="POST">
+                        <button type="submit">Vote for This Entry 🔥</button>
+                    </form>
+                </div>
+            </li>
+        <% }); %>
+    </ul>
 </body>
 </html>

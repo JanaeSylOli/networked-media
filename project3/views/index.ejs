@@ -1,13 +1,10 @@
-<html>
+<html lang="en">
 <head>
     <title>Boogeyman’s Hide & Seek</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <div class="fog-container">
-        <div class="fog"></div>
-    </div>
-    
+
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
@@ -17,42 +14,66 @@
         </ul>
     </nav>
 
-    <header class="hero-banner">
-        <h1>So you think you can scare?</h1>
-    </header>
-
-    <section>
-        <h2>🗣️ Latest Scare Stories</h2>
-        <ul>
-            <% latestForumPosts.forEach(post => { %>
-                <li>
-                    <strong><%= post.username %></strong>: <%= post.text %> - <strong><%= post.votes %> votes</strong>
-                    <form action="/vote-forum" method="POST">
-                        <input type="hidden" name="postId" value="<%= post.id %>">
-                        <button type="submit">Upvote</button>
-                    </form>
-                </li>
-            <% }) %>
-        </ul>
-        <a href="/forum" class="more-btn">More Forum Entries</a>
-    </section>
-
-    <section>
-        <h2>🎭 Latest Challenge Entry</h2>
-        <% if (latestChallenge) { %>
-            <div class="challenge-box">
-                <h3><%= latestChallenge.title %></h3>
-                <a href="/challenges">View Challenges</a>
-            </div>
-        <% } else { %>
-            <p>No challenge entries yet.</p>
-        <% } %>
-    </section>
-
-    <div class="fog-container">
-        <div class="fog"></div>
+    <!-- Hero Banner -->
+    <div class="video-wrapper">
+        <video autoplay loop muted class="background-video">
+            <source src="/videos/red-eyes.mp4" type="video/mp4">
+        </video>
+        <div class="hero-title">
+            <h1>👻 So You Think You Can Scare? 👻</h1>
+            <p>Share your scariest stories and take on terrifying challenges.</p>
+        </div>
     </div>
 
-    <script src="/js/script.js"></script>
+    <!-- Forum Section -->
+    <section class="forum-section">
+        <h2>👻 Funniest Boogeyman Hiding Stories</h2>
+
+        <!-- User Submission Form -->
+        <form action="/forum" method="POST" enctype="multipart/form-data">
+            <input type="text" name="username" placeholder="Your Name" required>
+            <textarea name="story" placeholder="Your funniest/scariest hiding story..." required></textarea>
+            <input type="file" name="image" accept="image/*">
+            <button type="submit">Submit Your Story</button>
+        </form>
+
+        <ul>
+            <% if (forumPosts && forumPosts.length > 0) { %>
+                <% forumPosts.forEach((post, index) => { %>
+                    <li class="forum-entry">
+                        <img src="<%= post.image %>" width="200" alt="Scary Image">
+                        <div class="forum-text">
+                            <strong><%= post.username %></strong>: <%= post.story %> (Votes: <%= post.votes %>)
+                            <form action="/forum/upvote/<%= index %>" method="POST">
+                                <button type="submit">Upvote 🔥</button>
+                            </form>
+                        </div>
+                    </li>
+                <% }); %>
+            <% } else { %>
+                <p>No scary stories yet. Be the first to share one! 👻</p>
+            <% } %>
+        </ul>
+    </section>
+
+    <!-- Latest Challenge Entry -->
+    <section class="latest-challenge">
+        <h2>🎭 Latest Challenge Entry</h2>
+
+        <% if (challengeEntries && challengeEntries.length > 0) { %>
+            <% let latestChallengeEntry = challengeEntries[challengeEntries.length - 1]; %>
+            <div class="challenge-entry">
+                <img src="<%= latestChallengeEntry.image %>" width="200">
+                <div class="challenge-text">
+                    <strong><%= latestChallengeEntry.username %></strong> entered <%= latestChallengeEntry.challengeName %> - "<%= latestChallengeEntry.story %>"
+                </div>
+            </div>
+        <% } else { %>
+            <p>No challenge entries yet! Be the first to enter. 🎃</p>
+        <% } %>
+
+        <a href="/challenges" class="button">Find Out More</a>
+    </section>
+
 </body>
 </html>

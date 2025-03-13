@@ -87,3 +87,71 @@ window.onload = () => {
     ambience.volume = 0.3;
     ambience.play();
 };
+
+window.onload = () => {
+    let ambience = new Audio("/sounds/ambience.mp3"); // Local file
+    ambience.loop = true;
+    ambience.volume = 0.3;
+    ambience.play().catch(() => {
+        console.log("Autoplay blocked: Click anywhere to start sound.");
+    });
+};
+
+// Allow user interaction to start sound if autoplay is blocked
+document.addEventListener("click", () => {
+    let ambience = new Audio("/sounds/ambience.mp3");
+    ambience.loop = true;
+    ambience.volume = 0.3;
+    ambience.play();
+});
+
+// Hover & Click Sounds
+document.querySelectorAll("button, a").forEach(element => {
+    const hoverSound = new Audio("/sounds/hover.mp3");
+    const clickSound = new Audio("/sounds/click.mp3");
+
+    element.addEventListener("mouseenter", () => hoverSound.play());
+    element.addEventListener("click", () => clickSound.play());
+});
+
+// Hidden Easter Egg Scare Sound
+document.addEventListener("DOMContentLoaded", () => {
+    const scareTrigger = document.createElement("div");
+    scareTrigger.style.position = "fixed";
+    scareTrigger.style.bottom = "10px";
+    scareTrigger.style.right = "10px";
+    scareTrigger.style.width = "50px";
+    scareTrigger.style.height = "50px";
+    scareTrigger.style.opacity = "0";
+    scareTrigger.style.cursor = "pointer";
+
+    document.body.appendChild(scareTrigger);
+
+    scareTrigger.addEventListener("click", () => {
+        let scareSound = new Audio("/sounds/screech.mp3");
+        scareSound.play();
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const hoverSound = new Audio("/sounds/creepy-hover.mp3");
+    
+        document.querySelectorAll("a, button").forEach((element) => {
+            element.addEventListener("mouseenter", () => {
+                hoverSound.currentTime = 0;
+                hoverSound.play();
+            });
+        });
+    });
+    document.addEventListener("mousemove", function (e) {
+        let trail = document.createElement("div");
+        trail.classList.add("cursor-trail");
+        document.body.appendChild(trail);
+        trail.style.left = `${e.pageX}px`;
+        trail.style.top = `${e.pageY}px`;
+    
+        setTimeout(() => {
+            trail.remove();
+        }, 500);
+    });
+    
+});

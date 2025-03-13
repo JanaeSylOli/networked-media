@@ -1,13 +1,43 @@
-nav {
-    background-color: #222;
-    padding: 10px;
+body {
+    background: black;
+    color: white;
+    font-family: 'Arial', sans-serif;
     text-align: center;
+}
+
+.background-video {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+
+    .video-wrapper {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        top: 0;
+        left: 0;
+    }
+    
+    .background-video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+nav {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px;
 }
 
 nav ul {
     list-style: none;
     padding: 0;
-    margin: 0;
 }
 
 nav ul li {
@@ -16,151 +46,118 @@ nav ul li {
 }
 
 nav ul li a {
-    color: #fff;
+    color: red;
     text-decoration: none;
-    font-size: 18px;
-    padding: 10px 15px;
-    transition: 0.3s;
-}
-
-nav ul li a:hover {
-    background-color: #ff7043;
-    border-radius: 5px;
-}
-
-.hero-banner {
-    text-align: center;
-    background-color: #000;
-    color: #ff7043;
-    padding: 50px;
-    font-size: 24px;
     font-weight: bold;
 }
 
-body {
-    background-color: #000;
-    color: #ff7043;
-    font-family: "Creepster", cursive;
-    text-align: center;
-    overflow-x: hidden;
-}
-
-/* Floating Fog Effect */
-.fog-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    pointer-events: none;
-}
-
-.fog {
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    background: url("/images/fog.png") repeat-x;
-    opacity: 0.3;
-    animation: moveFog 20s linear infinite;
-}
-
-@keyframes moveFog {
-    from {
-        transform: translateX(0%);
-    }
-    to {
-        transform: translateX(-50%);
-    }
-}
-
-/* Custom Cursor */
-body {
-    cursor: url("/images/cursor.png"), auto;
-}
-
-/* Cursor Trail Effect */
-.cursor-trail {
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    background-color: red;
-    border-radius: 50%;
-    pointer-events: none;
-    opacity: 0.7;
-    animation: fadeOut 0.5s ease-out;
-}
-
-@keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
-}
-
-@keyframes flicker {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
+h1, h2 {
+    text-shadow: 3px 3px 5px red;
 }
 
 button {
-    background-color: #ff4500;
-    color: #fff;
+    background: red;
     border: none;
-    padding: 8px 12px;
-    font-size: 12px;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
     cursor: pointer;
-    text-transform: uppercase;
-    transition: 0.3s ease-in-out;
-    box-shadow: 0 0 5px #ff4500;
 }
 
 button:hover {
-    box-shadow: 0 0 15px #ff4500, 0 0 30px #ff7043;
-    transform: scale(1.05);
-}
-button:active {
-    box-shadow: 0 0 5px #ff4500;
-    transform: scale(1);
+    background: darkred;
 }
 
-/*h1, h2 {
-    text-shadow: 0 0 5px #ff7043, 0 0 10px #ff4500;
-    animation: flicker 1.5s infinite alternate;
-} */
-
-h1, h2 {
-    color: #ff4500;
-    font-family: 'Creepster', cursive;
-    text-shadow: 0 0 5px #ff7043, 0 0 10px #ff4500;
-    animation: dripEffect 2s infinite alternate;
+ul {
+    list-style: none;
+    padding: 0;
 }
 
-@keyframes dripEffect {
-    0% { text-shadow: 0 0 5px #ff7043; }
-    50% { text-shadow: 0 0 10px #ff0000; }
-    100% { text-shadow: 0 0 5px #ff7043; }
+ul li {
+    background: rgba(255, 0, 0, 0.2);
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
 }
 
-/* Optimize Fog Animation */
-.fog {
-    will-change: transform;
-    animation: moveFog 20s linear infinite;
+img {
+    border-radius: 10px;
+    box-shadow: 0 0 10px red;
 }
 
-/* Optimize Neon Flicker */
-@keyframes flicker {
-    0% { opacity: 1; text-shadow: 0 0 5px #ff7043; }
-    50% { opacity: 0.8; text-shadow: 0 0 15px #ff4500; }
-    100% { opacity: 1; text-shadow: 0 0 5px #ff7043; }
+.hero-text {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    text-shadow: 3px 3px 5px red;
+    font-size: 2rem;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 15px;
+    border-radius: 10px;
 }
 
-/* Background Animation */
-@keyframes backgroundPulse {
-    0% { background-color: #000; }
-    50% { background-color: #0a0a0a; }
-    100% { background-color: #000; }
+/* HERO BANNER */
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
 }
 
-body {
-    animation: backgroundPulse 10s infinite alternate;
+.background-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* TITLE TEXT - Positioned UNDER the eyes */
+.hero-title {
+    position: absolute;
+    bottom: 5%; /* Adjust to move under the eyes */
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-size: 2.5rem;
+    text-shadow: 4px 4px 10px red;
+}
+
+.hero-title p {
+    font-size: 1.2rem;
+}
+
+/* FORUM SECTION - Separate from hero */
+.forum-section {
+    padding: 40px;
+    background: black;
+    text-align: center;
+}
+
+/* FORUM ENTRIES */
+.forum-entry {
+    background: rgba(255, 0, 0, 0.2);
+    padding: 20px;
+    margin: 15px auto;
+    border-radius: 10px;
+    text-align: left; /* Aligns text properly */
+    max-width: 800px; /* Wider boxes */
+    width: 90%;
+    display: flex; /* Makes image and text appear side by side */
+    align-items: center; /* Vertically aligns items */
+    gap: 20px; /* Adds space between image and text */
+}
+
+/* Forum Entry Image */
+.forum-entry img {
+    border-radius: 10px;
+    box-shadow: 0 0 10px red;
+    max-width: 250px; /* Controls image size */
+    height: auto;
+}
+
+/* Forum Entry Text */
+.forum-text {
+    flex: 1; /* Makes text take remaining space */
 }
