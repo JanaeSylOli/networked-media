@@ -1,2 +1,6 @@
+<<<<<<< HEAD
+node_modules/
+.DS_Store
+=======
 .env
-.env
+>>>>>>> 02070a4 (Add bot files for Mastodon project)

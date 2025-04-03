@@ -1,0 +1,54 @@
+<html lang="en">
+<head>
+    <title>Boogeyman’s Hide & Seek | Forum</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <audio id="click-sound" src="/sounds/click.mp3" preload="auto"></audio>
+<style>
+    button:active + audio {
+        display: block;
+    }
+</style>
+<button>Upvote 🔥</button>
+<audio src="/sounds/click.mp3" preload="auto"></audio>
+
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/forum">Forum</a></li>
+            <li><a href="/challenges">Challenges</a></li>
+            <li><a href="/leaderboard">Leaderboard</a></li>
+        </ul>
+    </nav>
+
+    <section class="forum-section">
+        <h1>💬 Full Scare Stories Forum</h1>
+
+        <% forumEntries.forEach((entry, index) => { %>
+            <div class="forum-entry">
+                <img src="<%= entry.image %>" alt="Scary Image">
+                <div class="entry-text">
+                    <p><strong><%= entry.username %>:</strong> <%= entry.text %></p>
+                    <p><strong>Votes:</strong> <%= entry.votes %></p>
+                </div>
+                <form action="/vote-forum" method="POST">
+                    <input type="hidden" name="index" value="<%= index %>">
+                    <button type="submit">Upvote 👆</button>
+                </form>
+            </div>
+        <% }) %>
+    </section>
+
+    <section class="submit-form">
+        <h2>Submit Your Scariest Story</h2>
+        <form action="/submit-forum" method="POST" enctype="multipart/form-data">
+            <input type="text" name="username" placeholder="Your Name" required>
+            <textarea name="text" placeholder="Tell your scary story..." required></textarea>
+            <input type="file" name="image">
+            <button type="submit">Submit</button>
+        </form>
+    </section>
+
+</body>
+</html>

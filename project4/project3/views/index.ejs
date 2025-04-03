@@ -1,0 +1,111 @@
+<html lang="en">
+<head>
+    <title>Boogeyman’s Hide & Seek</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<head>
+    <audio id="click-sound" src="/sounds/click.mp3" preload="auto"></audio>
+<style>
+    button:active + audio {
+        display: block;
+    }
+</style>
+<button>Upvote 🔥</button>
+<audio src="/sounds/click.mp3" preload="auto"></audio>
+    <title>Boogeyman’s Hide & Seek</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script>
+        function upvote(index) {
+            fetch(`/forum/upvote/${index}`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.votes !== undefined) {
+                        document.getElementById(`votes-${index}`).innerText = `(${data.votes} votes)`;
+                    } else {
+                        console.error('Error:', data.error);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+
+    
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/forum">Forum</a></li>
+            <li><a href="/challenges">Challenges</a></li>
+            <li><a href="/leaderboard">Leaderboard</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Banner -->
+    <div class="video-wrapper">
+        <video autoplay loop muted class="background-video">
+            <source src="/videos/red-eyes.mp4" type="video/mp4">
+        </video>
+        <div class="hero-title">
+            <h1>👻 So You Think You Can Scare? 👻</h1>
+            <p>Share your scariest stories and take on terrifying challenges.</p>
+        </div>
+    </div>
+
+    <!-- Forum Section -->
+    <section class="forum-section">
+        <h2>👻 Funniest Boogeyman Hiding Stories</h2>
+
+        <!-- User Submission Form -->
+        <form action="/forum" method="POST" enctype="multipart/form-data">
+            <input type="text" name="username" placeholder="Your Name" required>
+            <textarea name="story" placeholder="Your funniest/scariest hiding story..." required></textarea>
+            <input type="file" name="image" accept="image/*">
+            <button type="submit">Submit Your Story</button>
+        </form>
+
+        <ul>
+            <% if (forumPosts && forumPosts.length > 0) { %>
+                <% forumPosts.forEach((post, index) => { %>
+                    <li class="forum-entry">
+                        <!-- Fixed: Use <%- post.image %> to prevent escaping -->
+                        <img src="<%- post.image %>" width="200" alt="Scary Image">
+
+                        <div class="forum-text">
+                            <strong><%- post.username %></strong>: <%- post.story %> (Votes: <%- post.votes %>)
+                            
+                            <!-- Fixed: Use <%- index %> to prevent escaping issues -->
+                            <form action="/forum/upvote/<%- index %>" method="POST">
+                                <button type="submit">Upvote 🔥</button>
+                            </form>
+                        </div>
+                    </li>
+                <% }); %>
+            <% } else { %>
+                <p>No scary stories yet. Be the first to share one! 👻</p>
+            <% } %>
+        </ul>
+    </section>
+
+    <!-- Latest Challenge Entry -->
+    <section class="latest-challenge">
+        <h2>🎭 Latest Challenge Entry</h2>
+    
+        <% if (latestChallengeEntry) { %>
+            <div class="challenge-entry">
+                <img src="<%= latestChallengeEntry.image %>" width="200">
+                <div class="challenge-text">
+                    <strong><%= latestChallengeEntry.username %></strong> entered <%= latestChallengeEntry.challengeName %> - "<%= latestChallengeEntry.story %>"
+                </div>
+            </div>
+        <% } else { %>
+            <p>No challenge entries yet! Be the first to enter. 🎃</p>
+        <% } %>
+    
+        <a href="/challenges" class="button">Find Out More</a>
+    </section>
+    >
+
+</body>
+</html>

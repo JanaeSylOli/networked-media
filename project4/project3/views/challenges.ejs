@@ -1,0 +1,59 @@
+
+
+<html> lang="en">
+<head>
+    <link rel="stylesheet" href="/styles.css">
+    <title>Challenges</title>
+</head>
+<audio id="click-sound" src="/sounds/click.mp3" preload="auto"></audio>
+<style>
+    button:active + audio {
+        display: block;
+    }
+</style>
+<button>Upvote 🔥</button>
+<audio src="/sounds/click.mp3" preload="auto"></audio>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/forum">Forum</a></li>
+            <li><a href="/challenges">Challenges</a></li>
+            <li><a href="/leaderboard">Leaderboard</a></li>
+        </ul>
+    </nav>
+
+    <h1>🎭 Spooky Challenges</h1>
+
+    <ul>
+        <% challenges.forEach(challenge => { %>
+            <li>
+                <strong><%= challenge.name %></strong> - Deadline: <%= challenge.deadline %> - Prize: <%= challenge.prize %>
+            </li>
+        <% }); %>
+    </ul>
+
+    <h2>Submit Challenge Entry</h2>
+    <form action="/challenges" method="POST" enctype="multipart/form-data">
+        <input type="text" name="username" placeholder="Your Name" required>
+        <textarea name="story" placeholder="Describe your challenge entry..." required></textarea>
+        <input type="file" name="challengeImage" accept="image/*">
+        <button type="submit">Enter Challenge</button>
+    </form>
+
+    <h2>Challenge Submissions</h2>
+    <ul>
+        <% challengeEntries.forEach((entry, index) => { %>
+            <li class="forum-entry">
+                <img src="<%= entry.image %>" width="200">
+                <div class="forum-text">
+                    <strong><%= entry.username %></strong> entered <%= entry.challengeName %> - "<%= entry.story %>" (Votes: <%= entry.votes %>)
+                    <form action="/challenges/upvote/<%= index %>" method="POST">
+                        <button type="submit">Vote for This Entry 🔥</button>
+                    </form>
+                </div>
+            </li>
+        <% }); %>
+    </ul>
+</body>
+</html>

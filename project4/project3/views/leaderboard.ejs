@@ -1,0 +1,38 @@
+<html lang="en">
+<head>
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/forum">Forum</a></li>
+            <li><a href="/challenges">Challenges</a></li>
+            <li><a href="/leaderboard">Leaderboard</a></li>
+        </ul>
+    </nav>
+
+    <h2>🏆 Top Scary Stories</h2>
+    <ul>
+        <% sortedForum.forEach((story, index) => { %>
+            <li>
+                <img src="<%= story.image %>" width="100">
+                <strong><%= story.username %>:</strong> <%= story.story %> (Votes: <span id="votes-<%= index %>"><%= story.votes %></span>)
+            </li>
+        <% }); %>
+    </ul>
+
+    <h2>🏆 Top Challenge Entries</h2>
+    <ul>
+        <% sortedChallenges.forEach((entry, index) => { %>
+            <li>
+                <img src="<%= entry.image %>" width="100">
+                <strong><%= entry.username %></strong> entered <%= entry.challengeName %> - "<%= entry.story %>" (Votes: <%= entry.votes %>)
+            </li>
+        <% }); %>
+    </ul>
+
+</body>
+</html>

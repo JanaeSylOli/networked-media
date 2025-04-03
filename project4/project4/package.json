@@ -1,0 +1,9 @@
+{
+ "type": "module",
+ "dependencies": {
+  "dotenv": "^16.4.7",
+  "masto": "^6.10.3",
+  "mastodon": "^1.2.2",
+  "node-fetch": "^3.3.2"
+ }
+}
