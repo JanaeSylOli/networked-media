@@ -1,7 +1,1 @@
-<<<<<<< HEAD
-node_modules/
-.DS_Store
-=======
 .env
-.env
->>>>>>> 7a947d8 (Add Mastodon bot project without .env)
