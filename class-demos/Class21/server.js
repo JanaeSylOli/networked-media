@@ -36,7 +36,8 @@ app.post("/upload", upload.single("theimage"), (req, res)=>{
   let data = {
     text: req.body.text,
     date: currentDate.toLocaleString(),
-    timestamp: currentDate.getTime()
+    timestamp: currentDate.getTime(),
+    likes: 0
   }
 
   if(req.file){
@@ -71,11 +72,27 @@ app.get('/search', (req, res)=>{
   let databaseSearch = {
     text: new RegExp(searchTerm)
   }
-  
 
   // find all data objects that use the specific search term
   database.find(databaseSearch, (err, results)=>{
     res.render('index.ejs', {posts: results})
+  })
+})
+
+app.post('/like', (req, res)=>{
+  let postId = req.body.postId
+
+  let query = {
+    _id: postId
+  }
+
+  let update = {
+    // nedb specific syntax to update a numerical value
+    $inc: {likes: 1}
+  }
+
+  database.update(query, update, {}, (err, numUpdated)=>{
+    res.redirect('/')
   })
 })
 
