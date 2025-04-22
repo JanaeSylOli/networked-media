@@ -1,0 +1,31 @@
+.container {
+    display: flex;
+    width: 100px;
+    height: 100vh;
+};
+
+@media only screen and (max-width: 600px){
+
+    h1 {
+        color: lightblue;
+    }
+
+    .container {
+        width: 80px;
+    }
+
+    .child {
+        height: 100px;
+        background-color: rgb(172, 25, 175);
+    }
+}
+
+@media only screen and (min-width: 600px){
+    h1{
+        color: red;
+
+    }
+    .container {
+       width: 100px;
+    }
+}
