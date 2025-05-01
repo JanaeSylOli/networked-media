@@ -1,0 +1,18 @@
+body {
+    font-family: sans-serif;
+    text-align: center;
+    background: #e0f7fa;
+    padding: 2rem;
+}
+
+#dinoDisplay {
+    font-size: 4rem;
+    margin: 2rem 0;
+}
+#stats {
+    height: 120px;
+}
+canvas {
+    display: block;
+    margin: 0 auto;
+}
