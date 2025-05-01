@@ -7,6 +7,7 @@ let lifetime = 0
 let idleTimer = 0
 let isIdle = true
 
+// Load sounds
 const eatSound = new Audio('/assets/sounds/eat.mp3')
 const playSound = new Audio('/assets/sounds/play.mp3')
 const restSound = new Audio('/assets/sounds/sleep.mp3')
@@ -23,6 +24,7 @@ function randomColor() {
 }
 
 window.onload = () => {
+    // Try autoplay hello sound
     helloSound.play().catch(() => {
         window.addEventListener('click', () => helloSound.play(), { once: true })
     })
@@ -57,13 +59,13 @@ window.onload = () => {
             updateUI()
 
             setInterval(() => {
-                idleTimer++
+                idleTimer += 1
                 if (idleTimer >= 2) isIdle = true
 
                 lifetime += 5
 
                 if (dino.stage < 3 && !dino.dead && lifetime >= 60) {
-                    dino.stage++
+                    dino.stage += 1
                     lifetime = 0
                     console.log("⭐ Evolved by time! Stage:", dino.stage)
                 }
@@ -75,7 +77,8 @@ window.onload = () => {
                 }
 
                 if (!dino.dead && (
-                    (dino.energy <= 0 && dino.happiness <= 0) || dino.boredom >= 100
+                    (dino.energy <= 0 && dino.happiness <= 0) ||
+                    dino.boredom >= 100
                 )) {
                     dino.dead = true
                     console.log("💀 Your dino has died.")
@@ -94,33 +97,38 @@ function updateUI() {
     const img = document.createElement('img')
     img.src = getDinoImagePath()
     img.alt = 'dino'
-    img.id = 'dinoImg'
     img.style.width = '250px'
     img.onerror = () => {
-        img.src = '/assets/dinos/default.png'
+        img.src = `/assets/dinos/${dino.color || 'blue'}_satisfied.png`
     }
+    img.id = 'dinoImg'
     dinoDisplay.appendChild(img)
 
+    document.getElementById('type').innerText = dino.type
+    document.getElementById('stage').innerText = dino.stage
     document.getElementById('energy').innerText = dino.energy
     document.getElementById('happiness').innerText = dino.happiness
-    document.getElementById('boredom').innerText = dino.boredom
 }
 
 function getDinoImagePath() {
-    if (!dino.color) dino.color = 'blue'
-    const fallback = `/assets/dinos/${dino.color}_satisfied.png`
+    if (!dino.color) {
+        dino.color = 'blue'
+        console.warn('No color found, using "blue"')
+    }
+
     if (dino.dead) return `/assets/dinos/${dino.color}_dead.png`
     if (dino.energy <= 50 && dino.energy <= dino.happiness && dino.energy <= (100 - dino.boredom))
         return `/assets/dinos/${dino.color}_sleeping.png`
     if (dino.happiness <= 50 && dino.happiness <= dino.energy && dino.happiness <= (100 - dino.boredom))
         return `/assets/dinos/${dino.color}_hungry.png`
-    if (dino.boredom > 70 && dino.boredom >= (100 - dino.energy) && dino.boredom >= (100 - dino.happiness))
+    if (dino.boredom > 70)
         return `/assets/dinos/${dino.color}_bored.png`
     if (dino.happiness > 70 && dino.energy > 70 && dino.boredom > 70)
         return `/assets/dinos/${dino.color}_satisfied.png`
     if (dino.happiness > 60 && dino.energy > 60 && dino.boredom < 50)
         return `/assets/dinos/${dino.color}_fed.png`
-    return fallback
+
+    return `/assets/dinos/${dino.color}_satisfied.png`
 }
 
 function feedDino() {
@@ -143,7 +151,6 @@ function playWithDino() {
     dino.energy = Math.max(0, dino.energy - 5)
     dino.boredom = Math.min(100, dino.boredom + 10)
     playSound.play()
-    animateDino()
     maybeEvolve()
     saveDino()
     updateUI()
@@ -156,15 +163,9 @@ function restDino() {
     dino.happiness = Math.max(0, dino.happiness - 5)
     dino.boredom = Math.min(100, dino.boredom - 3)
     restSound.play()
-    animateDino()
     maybeEvolve()
     saveDino()
     updateUI()
-}
-
-function resetIdle() {
-    idleTimer = 0
-    isIdle = false
 }
 
 function animateDino() {
@@ -173,6 +174,11 @@ function animateDino() {
         img.classList.add('bounce')
         setTimeout(() => img.classList.remove('bounce'), 400)
     }
+}
+
+function resetIdle() {
+    idleTimer = 0
+    isIdle = false
 }
 
 function maybeEvolve() {
@@ -187,7 +193,7 @@ function saveDino() {
     fetch(`/saveDino?${params}`, { method: 'POST' })
 }
 
-// ==== p5.js ====
+// === P5.js for Stat Bars ===
 function setup() {
     let canvas = createCanvas(400, 200)
     canvas.parent('stats')
@@ -202,6 +208,7 @@ function draw() {
     fill('#4CAF50')
     rect(20, 20, animatedEnergy * 4, 20)
     fill(0)
+    textSize(14)
     text('Tired', 20, 15)
 
     fill('#FF9800')
