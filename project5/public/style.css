@@ -69,3 +69,40 @@ body {
     50% { transform: scale(0.95); }
     100% { transform: scale(1); }
 }
+
+body {
+  background-image: url('/assets/clouds/cartoon-clouds.png'); /* put your image here */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+body {
+  background-image: url('/assets/clouds/clouds.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  font-family: 'Fredoka', sans-serif;
+}
+
+h1 {
+  font-family: 'Fredoka', sans-serif;
+  color: #003366; /* deep blue */
+  font-size: 2.8rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.dino-container {
+  background-color: rgba(255, 255, 255, 0.85); 
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 500px;
+  margin: 40px auto;
+  text-align: center;
+  border: 5px solid #003366; 
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}

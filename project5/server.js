@@ -11,12 +11,11 @@ let database = new nedb({
     autoload: true
 })
 
-// root route - serves index.ejs
+/
 app.get('/', (req, res) => {
     res.render('index.ejs')
 })
 
-// load a user's dino by ID (or send nothing if new)
 app.get('/loadDino', (req, res) => {
     const userId = req.query.id
     database.findOne({ id: userId }, (err, data) => {
@@ -24,7 +23,7 @@ app.get('/loadDino', (req, res) => {
             console.error('Error loading dino:', err)
             return res.json({})
         }
-        res.json(data || {}) // send dino or blank for new users
+        res.json(data || {}) 
     })
 })
 
