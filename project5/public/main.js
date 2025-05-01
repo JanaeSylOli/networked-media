@@ -7,7 +7,6 @@ let lifetime = 0
 let idleTimer = 0
 let isIdle = true
 
-// Load sounds
 const eatSound = new Audio('/assets/sounds/eat.mp3')
 const playSound = new Audio('/assets/sounds/play.mp3')
 const restSound = new Audio('/assets/sounds/sleep.mp3')
@@ -24,7 +23,6 @@ function randomColor() {
 }
 
 window.onload = () => {
-    // Try to autoplay hello sound
     helloSound.play().catch(() => {
         window.addEventListener('click', () => helloSound.play(), { once: true })
     })
@@ -59,13 +57,13 @@ window.onload = () => {
             updateUI()
 
             setInterval(() => {
-                idleTimer += 1
+                idleTimer++
                 if (idleTimer >= 2) isIdle = true
 
                 lifetime += 5
 
                 if (dino.stage < 3 && !dino.dead && lifetime >= 60) {
-                    dino.stage += 1
+                    dino.stage++
                     lifetime = 0
                     console.log("⭐ Evolved by time! Stage:", dino.stage)
                 }
@@ -77,8 +75,7 @@ window.onload = () => {
                 }
 
                 if (!dino.dead && (
-                    (dino.energy <= 0 && dino.happiness <= 0) ||
-                    dino.boredom >= 100
+                    (dino.energy <= 0 && dino.happiness <= 0) || dino.boredom >= 100
                 )) {
                     dino.dead = true
                     console.log("💀 Your dino has died.")
@@ -97,57 +94,43 @@ function updateUI() {
     const img = document.createElement('img')
     img.src = getDinoImagePath()
     img.alt = 'dino'
+    img.id = 'dinoImg'
     img.style.width = '250px'
     img.onerror = () => {
         img.src = '/assets/dinos/default.png'
     }
-    img.id = 'dinoImg'
     dinoDisplay.appendChild(img)
 
-    document.getElementById('type').innerText = dino.type
-    document.getElementById('stage').innerText = dino.stage
     document.getElementById('energy').innerText = dino.energy
     document.getElementById('happiness').innerText = dino.happiness
+    document.getElementById('boredom').innerText = dino.boredom
 }
 
 function getDinoImagePath() {
+    if (!dino.color) dino.color = 'blue'
+    const fallback = `/assets/dinos/${dino.color}_satisfied.png`
     if (dino.dead) return `/assets/dinos/${dino.color}_dead.png`
-
-    if (dino.energy <= 50 && dino.energy <= dino.happiness && dino.energy <= (100 - dino.boredom)) {
+    if (dino.energy <= 50 && dino.energy <= dino.happiness && dino.energy <= (100 - dino.boredom))
         return `/assets/dinos/${dino.color}_sleeping.png`
-    }
-    if (dino.happiness <= 50 && dino.happiness <= dino.energy && dino.happiness <= (100 - dino.boredom)) {
+    if (dino.happiness <= 50 && dino.happiness <= dino.energy && dino.happiness <= (100 - dino.boredom))
         return `/assets/dinos/${dino.color}_hungry.png`
-    }
-    if (dino.boredom > 70 && dino.boredom >= (100 - dino.energy) && dino.boredom >= (100 - dino.happiness)) {
+    if (dino.boredom > 70 && dino.boredom >= (100 - dino.energy) && dino.boredom >= (100 - dino.happiness))
         return `/assets/dinos/${dino.color}_bored.png`
-    }
-    if (dino.happiness > 70 && dino.energy > 70 && dino.boredom > 70) {
+    if (dino.happiness > 70 && dino.energy > 70 && dino.boredom > 70)
         return `/assets/dinos/${dino.color}_satisfied.png`
-    }
-    if (dino.happiness > 60 && dino.energy > 60 && dino.boredom < 50) {
+    if (dino.happiness > 60 && dino.energy > 60 && dino.boredom < 50)
         return `/assets/dinos/${dino.color}_fed.png`
-    }
-
-    return `/assets/dinos/${dino.color}_satisfied.png`
+    return fallback
 }
 
 function feedDino() {
     if (dino.dead) return
     resetIdle()
-
     dino.energy = Math.min(100, dino.energy + 10)
     dino.happiness = Math.min(100, dino.happiness + 2)
     dino.boredom = Math.max(0, dino.boredom - 5)
-
     eatSound.play()
-
-    const img = document.getElementById('dinoImg')
-    if (img) {
-        img.classList.add('bounce')
-        setTimeout(() => img.classList.remove('bounce'), 400)
-    }
-
+    animateDino()
     maybeEvolve()
     saveDino()
     updateUI()
@@ -156,13 +139,11 @@ function feedDino() {
 function playWithDino() {
     if (dino.dead) return
     resetIdle()
-
     dino.happiness = Math.min(100, dino.happiness + 10)
     dino.energy = Math.max(0, dino.energy - 5)
     dino.boredom = Math.min(100, dino.boredom + 10)
-
     playSound.play()
-
+    animateDino()
     maybeEvolve()
     saveDino()
     updateUI()
@@ -171,13 +152,11 @@ function playWithDino() {
 function restDino() {
     if (dino.dead) return
     resetIdle()
-
     dino.energy = Math.min(100, dino.energy + 10)
     dino.happiness = Math.max(0, dino.happiness - 5)
     dino.boredom = Math.min(100, dino.boredom - 3)
-
     restSound.play()
-
+    animateDino()
     maybeEvolve()
     saveDino()
     updateUI()
@@ -186,6 +165,14 @@ function restDino() {
 function resetIdle() {
     idleTimer = 0
     isIdle = false
+}
+
+function animateDino() {
+    const img = document.getElementById('dinoImg')
+    if (img) {
+        img.classList.add('bounce')
+        setTimeout(() => img.classList.remove('bounce'), 400)
+    }
 }
 
 function maybeEvolve() {
@@ -200,7 +187,7 @@ function saveDino() {
     fetch(`/saveDino?${params}`, { method: 'POST' })
 }
 
-// ==== p5.js visual meters ====
+// ==== p5.js ====
 function setup() {
     let canvas = createCanvas(400, 200)
     canvas.parent('stats')
@@ -208,7 +195,6 @@ function setup() {
 
 function draw() {
     clear()
-
     animatedEnergy = lerp(animatedEnergy, dino.energy, 0.1)
     animatedHappiness = lerp(animatedHappiness, dino.happiness, 0.1)
     animatedBoredom = lerp(animatedBoredom, dino.boredom, 0.1)
@@ -216,7 +202,6 @@ function draw() {
     fill('#4CAF50')
     rect(20, 20, animatedEnergy * 4, 20)
     fill(0)
-    textSize(14)
     text('Tired', 20, 15)
 
     fill('#FF9800')
