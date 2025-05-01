@@ -11,7 +11,7 @@ let database = new nedb({
     autoload: true
 })
 
-// root route - just serves index.ejs
+// root route - serves index.ejs
 app.get('/', (req, res) => {
     res.render('index.ejs')
 })
@@ -20,33 +20,40 @@ app.get('/', (req, res) => {
 app.get('/loadDino', (req, res) => {
     const userId = req.query.id
     database.findOne({ id: userId }, (err, data) => {
-        if (data) {
-            res.json(data)
-        } else {
-            res.json({}) // blank for new users
+        if (err) {
+            console.error('Error loading dino:', err)
+            return res.json({})
         }
+        res.json(data || {}) // send dino or blank for new users
     })
 })
 
-// create or update dino
+// create or update a dino
 app.post('/saveDino', (req, res) => {
     const query = req.query
 
     const dinoData = {
         id: query.id,
+        name: query.name || '',
         type: query.type,
-        stage: query.stage,
+        color: query.color,
+        stage: parseInt(query.stage),
         energy: parseInt(query.energy),
-        happiness: parseInt(query.happiness)
+        happiness: parseInt(query.happiness),
+        boredom: parseInt(query.boredom),
+        dead: query.dead === 'true'
     }
-
-    // overwrite if exists
-    database.update({ id: query.id }, dinoData, { upsert: true }, (err, newData) => {
-        res.redirect('/')
+    database.update({ id: query.id }, dinoData, { upsert: true }, (err, numReplaced) => {
+        if (err) {
+            console.error('Error saving dino:', err)
+            res.status(500).send('Error saving dino.')
+        } else {
+            res.status(200).send('Dino saved successfully.')
+        }
     })
 })
 
 // start the server
 app.listen(3000, () => {
-    console.log('http://127.0.0.1:3000')
+    console.log('Server running at http://127.0.0.1:3000')
 })
