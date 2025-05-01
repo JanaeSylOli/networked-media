@@ -4,6 +4,9 @@ let animatedEnergy = 0
 let animatedHappiness = 0
 let animatedBoredom = 0
 let lifetime = 0
+let idleTimer = 0
+let isIdle = false
+
 
 function randomType() {
     const types = ['cute', 'fierce', 'sleepy']
@@ -45,20 +48,21 @@ window.onload = () => {
             }
             updateUI()
 
-            // Decay + time evolution loop
+            // Decay + time evolution loop (only when idle)
             setInterval(() => {
-                if (!dino.dead) {
-                    dino.energy = Math.max(0, dino.energy - 1)
-                    dino.happiness = Math.max(0, dino.happiness - 1)
-                    dino.boredom = Math.min(100, dino.boredom + 1)
-                    lifetime += 10
+                idleTimer += 1
+                if (idleTimer >= 2) isIdle = true
 
-                    // Death check
+                if (!dino.dead && isIdle) {
+                    dino.energy = Math.max(0, dino.energy - 3)
+                    dino.happiness = Math.max(0, dino.happiness - 3)
+                    dino.boredom = Math.min(100, dino.boredom + 3)
+                    lifetime += 5
+
                     if (dino.energy <= 0 && dino.happiness <= 0 && dino.boredom >= 100) {
                         dino.dead = true
                     }
 
-                    // Evolve over time
                     if (lifetime > 60 && dino.stage < 3) {
                         dino.stage += 1
                     }
@@ -67,7 +71,7 @@ window.onload = () => {
                     updateUI()
                     saveDino()
                 }
-            }, 10000)
+            }, 5000)
         })
 }
 
@@ -79,6 +83,7 @@ function updateUI() {
     img.alt = 'dino'
     img.style.width = '150px'
     dinoDisplay.appendChild(img)
+    console.log('Dino image path:', getDinoImagePath())
 
     document.getElementById('type').innerText = dino.type
     document.getElementById('stage').innerText = dino.stage
@@ -87,17 +92,23 @@ function updateUI() {
 }
 
 function getDinoImagePath() {
-    if (dino.dead) return `/assets/dinos/${dino.type}_${dino.color}_dead.png`
+    if (dino.dead) return `/assets/dinos/${dino.color}_dead.png`
 
-    let mood = 'happy'
-    if (dino.energy < 30) mood = 'tired'
-    else if (dino.boredom > 70) mood = 'bored'
+    if (dino.energy > 80 && dino.happiness > 80 && dino.boredom < 30) return `/assets/dinos/${dino.color}_satisfied.png`
+    if (dino.energy < 30 && dino.happiness < 30 && dino.boredom > 70) return `/assets/dinos/${dino.color}_dead.png`
+    if (dino.energy > 80 && dino.happiness < 30 && dino.boredom < 30) return `/assets/dinos/${dino.color}_sleeping.png`
+    if (dino.energy > 70) return `/assets/dinos/${dino.color}_fed.png`
+    if (dino.happiness < 30) return `/assets/dinos/${dino.color}_hungry.png`
+    if (dino.boredom > 70) return `/assets/dinos/${dino.color}_bored.png`
 
-    return `/assets/dinos/${dino.color}_${mood}.png`
+    return `/assets/dinos/${dino.color}_satisfied.png`
 }
 
 function feedDino() {
     if (dino.dead) return
+    idleTimer = 0
+    isIdle = false
+
     dino.energy = Math.min(100, dino.energy + 10)
     dino.happiness = Math.min(100, dino.happiness + 2)
     dino.boredom = Math.max(0, dino.boredom - 5)
@@ -108,9 +119,12 @@ function feedDino() {
 
 function playWithDino() {
     if (dino.dead) return
+    idleTimer = 0
+    isIdle = false
+
     dino.happiness = Math.min(100, dino.happiness + 10)
     dino.energy = Math.max(0, dino.energy - 5)
-    dino.boredom = Math.max(0, dino.boredom - 10)
+    dino.boredom = Math.min(100, dino.boredom + 10)
     maybeEvolve()
     saveDino()
     updateUI()
@@ -118,9 +132,12 @@ function playWithDino() {
 
 function restDino() {
     if (dino.dead) return
-    dino.energy = Math.min(100, dino.energy + 15)
-    dino.happiness = Math.min(100, dino.happiness + 5)
-    dino.boredom = Math.min(100, dino.boredom + 5)
+    idleTimer = 0
+    isIdle = false
+
+    dino.energy = Math.min(100, dino.energy + 10)
+    dino.happiness = Math.max(0, dino.happiness - 5)
+    dino.boredom = Math.min(100, dino.boredom - 3)
     maybeEvolve()
     saveDino()
     updateUI()
@@ -140,30 +157,29 @@ function saveDino() {
 // ==== p5.js visual meters ====
 
 function setup() {
-    let canvas = createCanvas(300, 140)
+    let canvas = createCanvas(400, 200)
     canvas.parent('stats')
 }
-
 function draw() {
-    clear() // make canvas background transparent
+    clear()
 
     animatedEnergy = lerp(animatedEnergy, dino.energy, 0.1)
     animatedHappiness = lerp(animatedHappiness, dino.happiness, 0.1)
     animatedBoredom = lerp(animatedBoredom, dino.boredom, 0.1)
 
     fill('#4CAF50')
-    rect(20, 20, animatedEnergy * 2, 20)
+    rect(20, 20, animatedEnergy * 4, 20)
     fill(0)
-    textSize(12)
-    text('Energy', 20, 15)
+    textSize(14)
+    text('Tired', 20, 15)
 
     fill('#FF9800')
-    rect(20, 60, animatedHappiness * 2, 20)
+    rect(20, 70, animatedHappiness * 4, 20)
     fill(0)
-    text('Happiness', 20, 55)
+    text('Hungry', 20, 65)
 
     fill('#9C27B0')
-    rect(20, 100, animatedBoredom * 2, 20)
+    rect(20, 120, animatedBoredom * 4, 20)
     fill(0)
-    text('Boredom', 20, 95)
+    text('Bored', 20, 115)
 }
