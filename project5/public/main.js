@@ -5,7 +5,13 @@ let animatedHappiness = 0
 let animatedBoredom = 0
 let lifetime = 0
 let idleTimer = 0
-let isIdle = true // ← start idle so decay works immediately
+let isIdle = true
+
+// Load sounds
+const eatSound = new Audio('/assets/sounds/eat.mp3')
+const playSound = new Audio('/assets/sounds/play.mp3')
+const restSound = new Audio('/assets/sounds/sleep.mp3')
+const helloSound = new Audio('/assets/sounds/hello.mp3')
 
 function randomType() {
     const types = ['cute', 'fierce', 'sleepy']
@@ -18,6 +24,11 @@ function randomColor() {
 }
 
 window.onload = () => {
+    // Try to autoplay hello sound
+    helloSound.play().catch(() => {
+        window.addEventListener('click', () => helloSound.play(), { once: true })
+    })
+
     fetch(`/loadDino?id=${userId || ''}`)
         .then(res => res.json())
         .then(data => {
@@ -47,30 +58,24 @@ window.onload = () => {
 
             updateUI()
 
-            // Loop every 5 seconds
             setInterval(() => {
                 idleTimer += 1
                 if (idleTimer >= 2) isIdle = true
 
                 lifetime += 5
 
-                console.log("Loop: Energy:", dino.energy, "Happy:", dino.happiness, "Bored:", dino.boredom, "Stage:", dino.stage, "Dead:", dino.dead)
-
-                // Time-based evolution
                 if (dino.stage < 3 && !dino.dead && lifetime >= 60) {
                     dino.stage += 1
                     lifetime = 0
                     console.log("⭐ Evolved by time! Stage:", dino.stage)
                 }
 
-                // Stat decay only when idle
                 if (!dino.dead && isIdle) {
                     dino.energy = Math.max(0, dino.energy - 3)
                     dino.happiness = Math.max(0, dino.happiness - 3)
                     dino.boredom = Math.min(100, dino.boredom + 3)
                 }
 
-                // Death check
                 if (!dino.dead && (
                     (dino.energy <= 0 && dino.happiness <= 0) ||
                     dino.boredom >= 100
@@ -96,6 +101,7 @@ function updateUI() {
     img.onerror = () => {
         img.src = '/assets/dinos/default.png'
     }
+    img.id = 'dinoImg'
     dinoDisplay.appendChild(img)
 
     document.getElementById('type').innerText = dino.type
@@ -133,6 +139,15 @@ function feedDino() {
     dino.energy = Math.min(100, dino.energy + 10)
     dino.happiness = Math.min(100, dino.happiness + 2)
     dino.boredom = Math.max(0, dino.boredom - 5)
+
+    eatSound.play()
+
+    const img = document.getElementById('dinoImg')
+    if (img) {
+        img.classList.add('bounce')
+        setTimeout(() => img.classList.remove('bounce'), 400)
+    }
+
     maybeEvolve()
     saveDino()
     updateUI()
@@ -145,6 +160,9 @@ function playWithDino() {
     dino.happiness = Math.min(100, dino.happiness + 10)
     dino.energy = Math.max(0, dino.energy - 5)
     dino.boredom = Math.min(100, dino.boredom + 10)
+
+    playSound.play()
+
     maybeEvolve()
     saveDino()
     updateUI()
@@ -157,6 +175,9 @@ function restDino() {
     dino.energy = Math.min(100, dino.energy + 10)
     dino.happiness = Math.max(0, dino.happiness - 5)
     dino.boredom = Math.min(100, dino.boredom - 3)
+
+    restSound.play()
+
     maybeEvolve()
     saveDino()
     updateUI()
@@ -180,7 +201,6 @@ function saveDino() {
 }
 
 // ==== p5.js visual meters ====
-
 function setup() {
     let canvas = createCanvas(400, 200)
     canvas.parent('stats')
@@ -208,7 +228,4 @@ function draw() {
     rect(20, 120, animatedBoredom * 4, 20)
     fill(0)
     text('Bored', 20, 115)
-
-    console.log("DRAW: E:", dino.energy, "H:", dino.happiness, "B:", dino.boredom)
-
 }
