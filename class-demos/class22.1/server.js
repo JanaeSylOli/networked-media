@@ -3,7 +3,7 @@ const express = require('express');
 const { userInfo } = require('os');
 
 
-
+const ,ulter 
 // app setting
 const app = express();
 const encodePerser = express.urlencoded({extended: true});
@@ -18,6 +18,8 @@ app.set`('view engine', 'ejs');`
 app.get('/', (req, res) => {
 
 })
+app.get "/", (req, res) => {
+    database.find ``
 
 res.render('home.ejs', {title: 'Home Page'});
 app.get ('/about', (req, res) => {
@@ -31,7 +33,9 @@ app.get ('/submit', (req, res) => {
     user: req.query.username,
 }
 )
-
+ app,post 'upload'. upload.single 
+let frormular = multer({dest: 'uploads/'});
+form
 
 app.listen(5555,() => 
     console.log('server is running on port 5555'));

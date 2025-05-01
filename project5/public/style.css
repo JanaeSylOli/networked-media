@@ -16,3 +16,18 @@ canvas {
     display: block;
     margin: 0 auto;
 }
+
+button {
+    margin: 0.5rem;
+    padding: 0.4rem 1rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    background-color: #e0e0e0;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #d1f5d3;
+}
