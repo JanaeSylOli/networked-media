@@ -8,10 +8,10 @@ let idleTimer = 0
 let isIdle = true
 
 // Load sounds
-const eatSound = new Audio('/assets/sounds/eat.mp3')
-const playSound = new Audio('/assets/sounds/play.mp3')
-const restSound = new Audio('/assets/sounds/sleep.mp3')
-const helloSound = new Audio('/assets/sounds/hello.mp3')
+const eatSound = new Audio('assets/sounds/eat.MP3')
+const playSound = new Audio('assets/sounds/play.MP3')
+const restSound = new Audio('assets/sounds/sleep.mp3')
+const helloSound = new Audio('assets/sounds/hello.mp3')
 
 function randomType() {
     const types = ['cute', 'fierce', 'sleepy']
@@ -33,7 +33,7 @@ window.onload = () => {
         .then(res => res.json())
         .then(data => {
             if (!data.id) {
-                userId = crypto.randomUUID()
+                userId = '123'
                 dino = {
                     id: userId,
                     type: randomType(),
@@ -99,7 +99,7 @@ function updateUI() {
     img.alt = 'dino'
     img.style.width = '250px'
     img.onerror = () => {
-        img.src = `/assets/dinos/${dino.color || 'blue'}_satisfied.png`
+        img.src = `assets/dinos/${dino.color || 'blue'}_satisfied.png`
     }
     img.id = 'dinoImg'
     dinoDisplay.appendChild(img)
@@ -116,19 +116,19 @@ function getDinoImagePath() {
         console.warn('No color found, using "blue"')
     }
 
-    if (dino.dead) return `/assets/dinos/${dino.color}_dead.png`
+    if (dino.dead) return `assets/dinos/${dino.color}_dead.png`
     if (dino.energy <= 50 && dino.energy <= dino.happiness && dino.energy <= (100 - dino.boredom))
-        return `/assets/dinos/${dino.color}_sleeping.png`
+        return `assets/dinos/${dino.color}_sleeping.png`
     if (dino.happiness <= 50 && dino.happiness <= dino.energy && dino.happiness <= (100 - dino.boredom))
-        return `/assets/dinos/${dino.color}_hungry.png`
+        return `assets/dinos/${dino.color}_hungry.png`
     if (dino.boredom > 70)
-        return `/assets/dinos/${dino.color}_bored.png`
+        return `assets/dinos/${dino.color}_bored.png`
     if (dino.happiness > 70 && dino.energy > 70 && dino.boredom > 70)
-        return `/assets/dinos/${dino.color}_satisfied.png`
+        return `assets/dinos/${dino.color}_satisfied.png`
     if (dino.happiness > 60 && dino.energy > 60 && dino.boredom < 50)
-        return `/assets/dinos/${dino.color}_fed.png`
+        return `assets/dinos/${dino.color}_fed.png`
 
-    return `/assets/dinos/${dino.color}_satisfied.png`
+    return `assets/dinos/${dino.color}_satisfied.png`
 }
 
 function feedDino() {
